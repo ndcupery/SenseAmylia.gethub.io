@@ -61,7 +61,7 @@ export function Home() {
   return (
     <>
       {/* Video + Hero + Pillars shared container */}
-      <div className="relative overflow-hidden">
+      <div className="relative">
         {/* Background layers: video (if set) + aurora blobs */}
         <YouTubeBackground videoId={YOUTUBE_VIDEO_ID} start={YOUTUBE_START_TIME} />
 
@@ -184,8 +184,8 @@ export function Home() {
         </section>
       </div>
 
-      {/* CTA Section — outside video container */}
-      <section className="py-32 px-6">
+      {/* CTA Section — outside video container, solid bg to cover video */}
+      <section className="relative py-32 px-6 bg-background">
         <div className="mx-auto max-w-4xl">
           <motion.div
             initial={{ opacity: 0, y: 20 }}

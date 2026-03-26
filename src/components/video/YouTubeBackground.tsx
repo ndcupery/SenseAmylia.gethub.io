@@ -10,7 +10,7 @@ export function YouTubeBackground({ videoId, start }: YouTubeBackgroundProps) {
   const src = `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&mute=1&controls=0&loop=1&playlist=${videoId}&showinfo=0&modestbranding=1&rel=0&playsinline=1&disablekb=1&iv_load_policy=3&cc_load_policy=0${startParam}`;
 
   return (
-    <div className="sticky top-0 h-screen w-full overflow-hidden pointer-events-none -z-10">
+    <div className="fixed inset-0 overflow-hidden pointer-events-none -z-10">
       <iframe
         src={src}
         title="Background video"
