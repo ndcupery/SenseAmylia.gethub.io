@@ -30,13 +30,19 @@ export interface Project {
 }
 
 // Helper for referencing assets in public/content/projects/
-// e.g. projectAsset("phazer-visuals-2026/hero.jpg") → "/phazer-labs/content/projects/phazer-visuals-2026/hero.jpg"
-//
-// To use local images, replace the Unsplash URLs with projectAsset() calls:
-//   heroImage: projectAsset("phazer-visuals-2026/hero.jpg"),
-//   src: projectAsset("phazer-visuals-2026/photos/festival-crowd-lasers.jpg"),
 export const projectAsset = (path: string) =>
   `${import.meta.env.BASE_URL}content/projects/${path}`;
+
+// Convention: each project folder has hero.jpg and thumbnail.jpg at the root.
+// New projects without real images yet should copy the defaults from
+// public/content/defaults/hero.jpg and thumbnail.jpg into their project folder.
+export function projectHero(slug: string): string {
+  return projectAsset(`${slug}/hero.jpg`);
+}
+
+export function projectThumbnail(slug: string): string {
+  return projectAsset(`${slug}/thumbnail.jpg`);
+}
 
 export const projects: Project[] = [
   {
@@ -46,8 +52,8 @@ export const projects: Project[] = [
       "Live VJ performances at festivals across the Midwest, blending real-time generative visuals with music.",
     description:
       "Phazer Visuals is my live visual performance project — I design and perform real-time generative visuals synchronized to music at festivals and events. Using a combination of custom software, MIDI controllers, and projection mapping, each performance is a unique, immersive experience. The 2026 season is focused on the Midwest circuit, bringing laser-reactive particle systems and audio-driven shader art to stages across the region.",
-    heroImage: "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=1920&q=80",
-    thumbnail: "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=600&q=80",
+    heroImage: projectHero("phazer-visuals-2026"),
+    thumbnail: projectThumbnail("phazer-visuals-2026"),
     tags: ["live-visuals", "festival", "creative-coding", "projection"],
     status: "active",
     startDate: "2025-03-01",
@@ -55,19 +61,19 @@ export const projects: Project[] = [
     media: [
       {
         type: "image",
-        src: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=800&q=80",
+        src: projectAsset("phazer-visuals-2026/media/festival-crowd-lasers.jpg"),
         alt: "Festival crowd with laser visuals",
         tags: ["festival", "laser"],
       },
       {
         type: "image",
-        src: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=800&q=80",
+        src: projectAsset("phazer-visuals-2026/media/stage-projection-setup.jpg"),
         alt: "Stage projection mapping setup",
         tags: ["projection", "setup"],
       },
       {
         type: "image",
-        src: "https://images.unsplash.com/photo-1574391884720-bbc3740c59d1?w=800&q=80",
+        src: projectAsset("phazer-visuals-2026/media/live-vj-generative.jpg"),
         alt: "Live VJ performance with generative art",
         tags: ["live-visuals", "generative"],
       },
@@ -97,8 +103,8 @@ export const projects: Project[] = [
       "The site you're looking at right now — built with React, Three.js, and a lot of experimentation.",
     description:
       "This website is itself an ongoing project. Built with React 19, TanStack Router, Tailwind CSS v4, and Three.js for the interactive 3D elements, it serves as both a portfolio and a playground for trying new web technologies. The YouTube background video integration, frosted glass cards, and aurora blob animations are all part of the experimental design approach. Everything is open source and deployed via GitHub Pages with automated CI/CD.",
-    heroImage: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=1920&q=80",
-    thumbnail: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=600&q=80",
+    heroImage: projectHero("phazer-labs-website"),
+    thumbnail: projectThumbnail("phazer-labs-website"),
     tags: ["web-dev", "react", "three-js", "open-source"],
     status: "active",
     startDate: "2025-09-01",
@@ -106,13 +112,13 @@ export const projects: Project[] = [
     media: [
       {
         type: "image",
-        src: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=800&q=80",
+        src: projectAsset("phazer-labs-website/media/code-editor-react.jpg"),
         alt: "Code editor with React components",
         tags: ["web-dev", "code"],
       },
       {
         type: "image",
-        src: "https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=800&q=80",
+        src: projectAsset("phazer-labs-website/media/3d-rendering-experiments.jpg"),
         alt: "3D rendering experiments",
         tags: ["three-js", "generative"],
       },
