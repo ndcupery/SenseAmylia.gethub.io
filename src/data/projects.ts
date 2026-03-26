@@ -29,14 +29,23 @@ export interface Project {
   updates: ProjectUpdate[];
 }
 
+// Helper for referencing assets in public/content/projects/
+// e.g. projectAsset("phazer-visuals-2026/hero.jpg") → "/phazer-labs/content/projects/phazer-visuals-2026/hero.jpg"
+//
+// To use local images, replace the Unsplash URLs with projectAsset() calls:
+//   heroImage: projectAsset("phazer-visuals-2026/hero.jpg"),
+//   src: projectAsset("phazer-visuals-2026/photos/festival-crowd-lasers.jpg"),
+export const projectAsset = (path: string) =>
+  `${import.meta.env.BASE_URL}content/projects/${path}`;
+
 export const projects: Project[] = [
   {
-    slug: "phazer-visuals-festival-tour",
-    title: "Phazer Visuals Festival Tour",
+    slug: "phazer-visuals-2026",
+    title: "Phazer Visuals 2026 Performances",
     abstract:
       "Live VJ performances at festivals across the Midwest, blending real-time generative visuals with music.",
     description:
-      "Phazer Visuals is my live visual performance project — I design and perform real-time generative visuals synchronized to music at festivals and events. Using a combination of custom software, MIDI controllers, and projection mapping, each performance is a unique, immersive experience. The 2026 festival season is focused on the Midwest circuit, bringing laser-reactive particle systems and audio-driven shader art to stages across the region.",
+      "Phazer Visuals is my live visual performance project — I design and perform real-time generative visuals synchronized to music at festivals and events. Using a combination of custom software, MIDI controllers, and projection mapping, each performance is a unique, immersive experience. The 2026 season is focused on the Midwest circuit, bringing laser-reactive particle systems and audio-driven shader art to stages across the region.",
     heroImage: "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=1920&q=80",
     thumbnail: "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=600&q=80",
     tags: ["live-visuals", "festival", "creative-coding", "projection"],
