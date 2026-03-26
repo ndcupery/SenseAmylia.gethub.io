@@ -65,8 +65,8 @@ export function Home() {
         {/* Background layers: video (if set) + aurora blobs */}
         <YouTubeBackground videoId={YOUTUBE_VIDEO_ID} start={YOUTUBE_START_TIME} />
 
-        {/* Full-span overlay for video legibility */}
-        <div className="absolute inset-0 bg-background/50 pointer-events-none -z-[5]" />
+        {/* Full-span overlay for video legibility — fixed to match video */}
+        <div className="fixed inset-0 bg-background/50 pointer-events-none -z-[5]" />
 
         {/* Hero Section */}
         <section className="relative min-h-screen flex items-center justify-center">
