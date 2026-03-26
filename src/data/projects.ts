@@ -123,9 +123,24 @@ export const projects: Project[] = [
   },
 ];
 
+export interface FlattenedMediaItem extends MediaItem {
+  projectSlug: string;
+  projectTitle: string;
+}
+
 export function getAllTags(projectList: Project[]): string[] {
   const tagSet = new Set(projectList.flatMap((p) => p.tags));
   return Array.from(tagSet).sort();
+}
+
+export function getAllMedia(): FlattenedMediaItem[] {
+  return projects.flatMap((p) =>
+    p.media.map((m) => ({
+      ...m,
+      projectSlug: p.slug,
+      projectTitle: p.title,
+    })),
+  );
 }
 
 export function getProjectBySlug(slug: string): Project | undefined {
