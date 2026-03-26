@@ -4,6 +4,7 @@ import { Link } from "@tanstack/react-router";
 import { ArrowLeft, Calendar, Circle, X } from "lucide-react";
 import { Route } from "@/routes/gallery/$projectSlug";
 import { getProjectBySlug } from "@/data/projects";
+import { ProjectHero } from "@/components/ui/ProjectVisual";
 import type { ProjectStatus } from "@/data/projects";
 import { Button } from "@/components/ui/button";
 
@@ -55,51 +56,18 @@ export function ProjectDetail() {
   return (
     <>
       {/* Full-bleed Hero */}
-      <div
-        className="relative w-full h-[60vh] -mt-[80px] bg-cover bg-center"
-        style={{ backgroundImage: `url(${project.heroImage})` }}
-      >
-        <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-transparent" />
-        <div className="absolute bottom-0 left-0 right-0 px-6 pb-10">
-          <div className="mx-auto max-w-6xl">
-            <Link
-              to="/gallery"
-              className="inline-flex items-center gap-1.5 text-sm text-text-muted hover:text-primary transition-colors mb-6"
-            >
-              <ArrowLeft size={14} />
-              Back to Gallery
-            </Link>
-            <motion.h1
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.35 }}
-              className="text-4xl sm:text-5xl font-black tracking-tight mb-4"
-            >
-              {project.title}
-            </motion.h1>
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.4, delay: 0.5 }}
-              className="flex flex-wrap items-center gap-3"
-            >
-              <span
-                className={`px-3 py-1 rounded-full text-xs font-medium border ${status.color}`}
-              >
-                {status.label}
-              </span>
-              {project.tags.map((tag) => (
-                <span
-                  key={tag}
-                  className="px-2 py-0.5 rounded-md border border-white/10 text-xs text-text-muted font-mono"
-                >
-                  {tag}
-                </span>
-              ))}
-            </motion.div>
-          </div>
+      {project.heroImage ? (
+        <div
+          className="relative w-full h-[60vh] -mt-[80px] bg-cover bg-center"
+          style={{ backgroundImage: `url(${project.heroImage})` }}
+        >
+          <HeroOverlay project={project} status={status} />
         </div>
-      </div>
+      ) : (
+        <ProjectHero slug={project.slug} className="w-full h-[60vh] -mt-[80px]">
+          <HeroOverlay project={project} status={status} />
+        </ProjectHero>
+      )}
 
       <div className="px-6 pb-20">
         {/* Metadata Bar */}
@@ -255,6 +223,59 @@ export function ProjectDetail() {
           </>
         )}
       </AnimatePresence>
+    </>
+  );
+}
+
+function HeroOverlay({
+  project,
+  status,
+}: {
+  project: ReturnType<typeof getProjectBySlug> & {};
+  status: { label: string; color: string };
+}) {
+  return (
+    <>
+      <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-transparent" />
+      <div className="absolute bottom-0 left-0 right-0 px-6 pb-10">
+        <div className="mx-auto max-w-6xl">
+          <Link
+            to="/gallery"
+            className="inline-flex items-center gap-1.5 text-sm text-text-muted hover:text-primary transition-colors mb-6"
+          >
+            <ArrowLeft size={14} />
+            Back to Gallery
+          </Link>
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.35 }}
+            className="text-4xl sm:text-5xl font-black tracking-tight mb-4"
+          >
+            {project.title}
+          </motion.h1>
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.4, delay: 0.5 }}
+            className="flex flex-wrap items-center gap-3"
+          >
+            <span
+              className={`px-3 py-1 rounded-full text-xs font-medium border ${status.color}`}
+            >
+              {status.label}
+            </span>
+            {project.tags.map((tag) => (
+              <span
+                key={tag}
+                className="px-2 py-0.5 rounded-md border border-white/10 text-xs text-text-muted font-mono"
+              >
+                {tag}
+              </span>
+            ))}
+          </motion.div>
+        </div>
+      </div>
     </>
   );
 }

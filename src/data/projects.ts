@@ -19,8 +19,8 @@ export interface Project {
   title: string;
   abstract: string;
   description: string;
-  heroImage: string;
-  thumbnail: string;
+  heroImage?: string;
+  thumbnail?: string;
   tags: string[];
   status: ProjectStatus;
   startDate: string;
@@ -52,8 +52,7 @@ export const projects: Project[] = [
       "Live VJ performances at festivals across the Midwest, blending real-time generative visuals with music.",
     description:
       "Phazer Visuals is my live visual performance project — I design and perform real-time generative visuals synchronized to music at festivals and events. Using a combination of custom software, MIDI controllers, and projection mapping, each performance is a unique, immersive experience. The 2026 season is focused on the Midwest circuit, bringing laser-reactive particle systems and audio-driven shader art to stages across the region.",
-    heroImage: projectHero("phazer-visuals-2026"),
-    thumbnail: projectThumbnail("phazer-visuals-2026"),
+    // heroImage and thumbnail are auto-generated via shader when not provided
     tags: ["live-visuals", "festival", "creative-coding", "projection"],
     status: "active",
     startDate: "2025-03-01",
@@ -103,8 +102,7 @@ export const projects: Project[] = [
       "The site you're looking at right now — built with React, Three.js, and a lot of experimentation.",
     description:
       "This website is itself an ongoing project. Built with React 19, TanStack Router, Tailwind CSS v4, and Three.js for the interactive 3D elements, it serves as both a portfolio and a playground for trying new web technologies. The YouTube background video integration, frosted glass cards, and aurora blob animations are all part of the experimental design approach. Everything is open source and deployed via GitHub Pages with automated CI/CD.",
-    heroImage: projectHero("phazer-labs-website"),
-    thumbnail: projectThumbnail("phazer-labs-website"),
+    // heroImage and thumbnail are auto-generated via shader when not provided
     tags: ["web-dev", "react", "three-js", "open-source"],
     status: "active",
     startDate: "2025-09-01",

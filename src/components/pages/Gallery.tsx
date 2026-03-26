@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "@tanstack/react-router";
 import { Calendar, Circle, Play, X } from "lucide-react";
 import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { ProjectThumbnail } from "@/components/ui/ProjectVisual";
 import { projects, getAllTags, getAllMedia } from "@/data/projects";
 import type { ProjectStatus, FlattenedMediaItem } from "@/data/projects";
 
@@ -321,13 +322,17 @@ function ProjectCard({
         className="block h-full"
       >
         <Card className="h-full group cursor-pointer hover:border-primary/20 hover:shadow-[0_0_30px_rgba(0,229,255,0.08)] overflow-hidden">
-          <div className="aspect-video overflow-hidden">
-            <img
-              src={project.thumbnail}
-              alt={project.title}
-              loading="lazy"
-              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-            />
+          <div className="aspect-video overflow-hidden group-hover:scale-105 transition-transform duration-500">
+            {project.thumbnail ? (
+              <img
+                src={project.thumbnail}
+                alt={project.title}
+                loading="lazy"
+                className="w-full h-full object-cover"
+              />
+            ) : (
+              <ProjectThumbnail slug={project.slug} title={project.title} className="w-full h-full" />
+            )}
           </div>
           <CardHeader>
             <div className="flex items-center gap-2 mb-2">

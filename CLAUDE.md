@@ -40,8 +40,8 @@ tags:
   - <tag-2>
 status: active
 startDate: <today's date in YYYY-MM-DD>
-heroImage: hero.jpg
-thumbnail: thumbnail.jpg
+heroImage: hero.jpg    # optional — omit to use auto-generated shader visual
+thumbnail: thumbnail.jpg  # optional — omit to use auto-generated shader visual
 ---
 
 <Full project description written in first person ("I"). 2-4 sentences.>
@@ -49,7 +49,7 @@ thumbnail: thumbnail.jpg
 
 ### Step 5: Add to `src/data/projects.ts`
 
-Add a new entry to the `projects` array. Use placeholder images (Unsplash URLs) for `heroImage` and `thumbnail` until the user provides real images. The entry must match the `Project` interface:
+Add a new entry to the `projects` array. **Do NOT provide `heroImage` or `thumbnail`** — the site auto-generates unique shader visuals for each project based on its slug. Only add these fields if the user provides real images. The entry must match the `Project` interface:
 
 ```typescript
 {
@@ -57,8 +57,7 @@ Add a new entry to the `projects` array. Use placeholder images (Unsplash URLs) 
   title: "<Project Name>",
   abstract: "<same as OVERVIEW.md frontmatter>",
   description: "<same as OVERVIEW.md body>",
-  heroImage: "https://images.unsplash.com/photo-<relevant-id>?w=1920&q=80",
-  thumbnail: "https://images.unsplash.com/photo-<relevant-id>?w=600&q=80",
+  // heroImage and thumbnail are omitted — auto-generated via shader
   tags: ["<tag-1>", "<tag-2>"],
   status: "active",
   startDate: "<YYYY-MM-DD>",
@@ -67,9 +66,10 @@ Add a new entry to the `projects` array. Use placeholder images (Unsplash URLs) 
 },
 ```
 
-To reference local images later, use the `projectAsset()` helper:
+To reference local images later (when the user provides real ones), use the `projectAsset()` helper:
 ```typescript
 heroImage: projectAsset("<slug>/hero.jpg"),
+thumbnail: projectAsset("<slug>/thumbnail.jpg"),
 ```
 
 ### Step 6: Verify
