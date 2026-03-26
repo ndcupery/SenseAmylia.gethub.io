@@ -31,6 +31,9 @@ export function YouTubeBackground({ videoId, start }: YouTubeBackgroundProps) {
         aria-hidden="true"
         onLoad={handleLoad}
       />
+      {/* Vignette overlay — lives on the fixed video layer */}
+      <div className="absolute inset-0 bg-background/50" />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_20%,rgba(10,14,26,0.7)_70%)]" />
     </div>
   );
 }

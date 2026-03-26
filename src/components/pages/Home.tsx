@@ -65,17 +65,9 @@ export function Home() {
         {/* Background layers: video (if set) + aurora blobs */}
         <YouTubeBackground videoId={YOUTUBE_VIDEO_ID} start={YOUTUBE_START_TIME} />
 
-        {/* Full-span overlay for video legibility — fixed to match video */}
-        <div className="fixed inset-0 bg-background/50 pointer-events-none -z-[5]" />
-
         {/* Hero Section */}
         <section className="relative min-h-screen flex items-center justify-center">
           <AuroraScene />
-
-          {/* Multi-layer overlay for hero text legibility */}
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_20%,rgba(10,14,26,0.7)_70%)] pointer-events-none" />
-          <div className="absolute inset-0 bg-gradient-to-b from-background/70 via-transparent to-background/80 pointer-events-none" />
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_50%_40%_at_50%_45%,rgba(10,14,26,0.5),transparent)] pointer-events-none" />
 
           <div className="relative z-10 mx-auto max-w-4xl px-6 text-center">
             <motion.div
@@ -184,18 +176,16 @@ export function Home() {
         </section>
       </div>
 
-      {/* CTA Section — outside video container, solid bg to cover video */}
-      <section className="relative py-32 px-6 bg-background">
+      {/* CTA Section — video shows through */}
+      <section className="relative py-32 px-6">
         <div className="mx-auto max-w-4xl">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="relative rounded-3xl border border-primary/20 bg-gradient-to-br from-primary/5 via-surface to-secondary/5 p-12 sm:p-16 text-center overflow-hidden"
+            className="relative rounded-3xl glass !bg-transparent backdrop-blur-xl border border-white/10 p-12 sm:p-16 text-center overflow-hidden"
           >
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_50%,rgba(0,229,255,0.08),transparent_60%)]" />
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_50%,rgba(123,47,190,0.08),transparent_60%)]" />
 
             <div className="relative z-10">
               <h2 className="text-3xl sm:text-4xl font-bold mb-4">
