@@ -26,7 +26,7 @@ export function YouTubeBackground({ videoId, start }: YouTubeBackgroundProps) {
         src={src}
         title="Background video"
         allow="autoplay; encrypted-media"
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120vw] h-[120vh] min-w-[120vw] min-h-[120vh] border-0"
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 min-w-[177.78vh] min-h-[120vh] w-[120vw] h-[120vh] border-0"
         tabIndex={-1}
         aria-hidden="true"
         onLoad={handleLoad}
