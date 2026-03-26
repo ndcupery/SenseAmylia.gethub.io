@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { Link } from "@tanstack/react-router";
 import { ArrowRight, Play, Code2, Palette, Sparkles } from "lucide-react";
-import { HeroScene } from "@/components/three/HeroScene";
+import { AuroraScene } from "@/components/three/AuroraScene";
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 
@@ -58,10 +58,12 @@ export function Home() {
     <>
       {/* Hero Section */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-        <HeroScene />
+        <AuroraScene />
 
-        {/* Gradient overlays */}
-        <div className="absolute inset-0 bg-gradient-to-b from-background/40 via-transparent to-background pointer-events-none" />
+        {/* Multi-layer overlay for text legibility */}
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_20%,rgba(10,14,26,0.7)_70%)] pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-b from-background/70 via-transparent to-background pointer-events-none" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_50%_40%_at_50%_45%,rgba(10,14,26,0.5),transparent)] pointer-events-none" />
 
         <div className="relative z-10 mx-auto max-w-4xl px-6 text-center">
           <motion.div
