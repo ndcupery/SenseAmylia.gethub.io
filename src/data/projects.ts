@@ -1,12 +1,6 @@
 export type ProjectStatus = "active" | "completed" | "archived";
 export type ProjectType = "3d" | "software" | "performance" | "artwork" | "diy";
 
-export interface ProjectUpdate {
-  date: string;
-  title: string;
-  body: string;
-}
-
 export interface MediaItem {
   type: "image" | "video";
   src: string;
@@ -28,7 +22,6 @@ export interface Project {
   startDate: string;
   updatedDate?: string;
   media: MediaItem[];
-  updates: ProjectUpdate[];
 }
 
 // Helper for referencing assets in public/content/projects/
@@ -80,23 +73,6 @@ export const projects: Project[] = [
         tags: ["live-visuals", "generative"],
       },
     ],
-    updates: [
-      {
-        date: "2026-03-15",
-        title: "Midwest Festival Season Lineup Announced",
-        body: "Excited to announce I've been confirmed for three festivals this summer. Kicking things off in June with a headlining visual set. More details coming soon.",
-      },
-      {
-        date: "2026-01-20",
-        title: "New Particle System Ready",
-        body: "Finished building a new audio-reactive particle system that responds to kick drums and hi-hats independently. The visual separation between low and high frequency elements creates way more depth in the performance.",
-      },
-      {
-        date: "2025-11-05",
-        title: "Gear Upgrade: New Projector Rig",
-        body: "Upgraded to a dual-projector setup for wider stage coverage. Testing blend zones and edge-matching this week before the first indoor show of the season.",
-      },
-    ],
   },
   {
     slug: "phazer-labs-website",
@@ -123,18 +99,6 @@ export const projects: Project[] = [
         src: projectAsset("phazer-labs-website/media/3d-rendering-experiments.jpg"),
         alt: "3D rendering experiments",
         tags: ["three-js", "generative"],
-      },
-    ],
-    updates: [
-      {
-        date: "2026-03-26",
-        title: "Gallery Page Launch",
-        body: "Added the gallery and project detail pages to showcase ongoing work. Built with the same frosted glass aesthetic and smooth page transitions as the rest of the site.",
-      },
-      {
-        date: "2026-03-20",
-        title: "YouTube Video Background",
-        body: "Integrated a YouTube embed as a fixed background video layer with a 2-second fade-in on load. The WebGL aurora blobs serve as a fallback while the video loads.",
       },
     ],
   },

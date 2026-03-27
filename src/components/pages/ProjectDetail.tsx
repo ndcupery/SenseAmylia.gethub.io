@@ -1,10 +1,12 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "@tanstack/react-router";
-import { ArrowLeft, Calendar, Circle, X } from "lucide-react";
+import { ArrowLeft, Calendar, Circle, MessageSquare, X } from "lucide-react";
 import { Route } from "@/routes/gallery/$projectSlug";
 import { getProjectBySlug } from "@/data/projects";
 import { ProjectHero } from "@/components/ui/ProjectVisual";
+import { getProjectUpdates } from "@/lib/loadUpdates";
+import type { ProjectUpdate } from "@/lib/loadUpdates";
 import type { ProjectStatus } from "@/data/projects";
 import { Button } from "@/components/ui/button";
 
@@ -31,6 +33,7 @@ export function ProjectDetail() {
   const { projectSlug } = Route.useParams();
   const project = getProjectBySlug(projectSlug);
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+  const [activeUpdate, setActiveUpdate] = useState<ProjectUpdate | null>(null);
 
   if (!project) {
     return (
@@ -52,6 +55,7 @@ export function ProjectDetail() {
   }
 
   const status = statusLabels[project.status];
+  const updates = getProjectUpdates(project.slug);
 
   return (
     <>
@@ -150,7 +154,7 @@ export function ProjectDetail() {
         )}
 
         {/* Updates Timeline */}
-        {project.updates.length > 0 && (
+        {updates.length > 0 && (
           <section className="mx-auto max-w-4xl">
             <motion.h2
               initial={{ opacity: 0, y: 20 }}
@@ -167,11 +171,12 @@ export function ProjectDetail() {
               viewport={{ once: true }}
               className="space-y-6"
             >
-              {project.updates.map((update) => (
-                <motion.div
+              {updates.map((update) => (
+                <motion.button
                   key={update.date}
                   variants={item}
-                  className="glass rounded-2xl p-6 border border-border"
+                  onClick={() => setActiveUpdate(update)}
+                  className="w-full text-left glass rounded-2xl p-6 border border-border cursor-pointer hover:border-primary/20 hover:shadow-[0_0_30px_rgba(0,229,255,0.08)] transition-all duration-300"
                 >
                   <div className="flex items-center gap-3 mb-3">
                     <span className="px-3 py-1 rounded-full bg-surface-light text-xs font-mono text-text-muted">
@@ -179,17 +184,17 @@ export function ProjectDetail() {
                     </span>
                     <h3 className="font-semibold text-text">{update.title}</h3>
                   </div>
-                  <p className="text-sm text-text-muted leading-relaxed">
+                  <p className="text-sm text-text-muted leading-relaxed line-clamp-2">
                     {update.body}
                   </p>
-                </motion.div>
+                </motion.button>
               ))}
             </motion.div>
           </section>
         )}
       </div>
 
-      {/* Lightbox */}
+      {/* Image Lightbox */}
       <AnimatePresence>
         {lightboxIndex !== null && project.media[lightboxIndex] && (
           <>
@@ -219,6 +224,65 @@ export function ProjectDetail() {
                 alt={project.media[lightboxIndex].alt}
                 className="max-w-full max-h-[85vh] rounded-2xl object-contain"
               />
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
+
+      {/* Update Modal */}
+      <AnimatePresence>
+        {activeUpdate && (
+          <>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setActiveUpdate(null)}
+              className="fixed inset-0 z-[100] bg-background/90 backdrop-blur-sm"
+            />
+            <motion.div
+              initial={{ opacity: 0, y: 40 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 40 }}
+              transition={{ duration: 0.25 }}
+              className="fixed inset-0 z-[101] flex flex-col"
+            >
+              {/* Close button */}
+              <div className="flex justify-end p-6">
+                <button
+                  onClick={() => setActiveUpdate(null)}
+                  className="p-2 text-text-muted hover:text-primary transition-colors"
+                >
+                  <X size={24} />
+                </button>
+              </div>
+
+              {/* Scrollable content */}
+              <div className="flex-1 overflow-y-auto px-6 pb-6">
+                <div className="mx-auto max-w-3xl">
+                  <div className="glass rounded-2xl p-8 border border-border">
+                    <div className="flex items-center gap-3 mb-6">
+                      <span className="px-3 py-1 rounded-full bg-surface-light text-xs font-mono text-text-muted">
+                        {activeUpdate.date}
+                      </span>
+                    </div>
+                    <h2 className="text-2xl font-bold text-text mb-6">
+                      {activeUpdate.title}
+                    </h2>
+                    <div className="text-text-muted leading-relaxed whitespace-pre-wrap">
+                      {activeUpdate.body}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Fixed bottom footer — comment thread placeholder */}
+              <div className="border-t border-border glass px-6 py-4">
+                <div className="mx-auto max-w-3xl flex items-center gap-3 text-text-muted">
+                  <MessageSquare size={16} />
+                  <span className="text-sm">Comments coming soon...</span>
+                </div>
+              </div>
             </motion.div>
           </>
         )}
