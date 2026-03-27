@@ -10,6 +10,7 @@ import { getProjectMedia } from "@/lib/loadMedia";
 import type { ProjectUpdate } from "@/lib/loadUpdates";
 import type { ProjectStatus } from "@/data/projects";
 import { Button } from "@/components/ui/button";
+import { useHead } from "@/hooks/useHead";
 
 const container = {
   hidden: { opacity: 0 },
@@ -35,6 +36,21 @@ export function ProjectDetail() {
   const project = getProjectBySlug(projectSlug);
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
   const [activeUpdate, setActiveUpdate] = useState<ProjectUpdate | null>(null);
+
+  const metaDescription = project
+    ? project.description.length > 300
+      ? project.description.slice(0, 297) + "..."
+      : project.description
+    : undefined;
+
+  useHead({
+    title: project ? `${project.title} | Phazer Labs` : undefined,
+    description: metaDescription,
+    ogUrl: project
+      ? `https://phazerlabs.com/gallery/${project.slug}`
+      : undefined,
+    ogImage: project?.thumbnail,
+  });
 
   if (!project) {
     return (
