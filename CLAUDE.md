@@ -92,5 +92,5 @@ Run `npm run lint && npx tsc -b && npm run build` to ensure everything compiles.
 - TanStack Router (file-based routing, `@tanstack/router-plugin/vite`)
 - Tailwind CSS v4 with `@tailwindcss/vite`
 - Framer Motion for animations
-- Deployed to GitHub Pages at `/phazer-labs/`
-- Base path configured in both `vite.config.ts` and router (`basepath: "/phazer-labs"`)
+- Deployed to GitHub Pages at root `/`
+- Base path configured to `"/"` in both `vite.config.ts` and router
