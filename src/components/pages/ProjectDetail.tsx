@@ -109,9 +109,54 @@ export function ProjectDetail() {
           </motion.p>
         </section>
 
+        {/* Updates Timeline */}
+        {updates.length > 0 && (
+          <section className="mx-auto max-w-4xl mb-20">
+            <motion.h2
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="text-2xl sm:text-3xl font-bold mb-8"
+            >
+              <span className="text-accent">Updates</span>
+            </motion.h2>
+            <motion.div
+              variants={container}
+              initial="hidden"
+              whileInView="show"
+              viewport={{ once: true }}
+              className="space-y-6"
+            >
+              {updates.map((update) => (
+                <motion.button
+                  key={update.date}
+                  variants={item}
+                  onClick={() => setActiveUpdate(update)}
+                  className="group w-full text-left glass rounded-2xl p-6 border border-border cursor-pointer hover:border-primary/30 hover:shadow-[0_0_40px_rgba(0,229,255,0.12)] hover:scale-[1.01] transition-all duration-300"
+                >
+                  <div className="flex items-center gap-3 mb-3">
+                    <h3 className="font-semibold text-text flex-1">{update.title}</h3>
+                    <span className="px-3 py-1 rounded-full bg-surface-light text-xs font-mono text-text-muted shrink-0">
+                      {update.date}
+                    </span>
+                    <ChevronRight
+                      size={16}
+                      className="text-text-muted opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 group-hover:text-primary transition-all duration-300 shrink-0"
+                    />
+                  </div>
+                  <div
+                    className="relative max-h-24 overflow-hidden text-sm text-text-muted leading-relaxed update-preview"
+                    dangerouslySetInnerHTML={{ __html: update.bodyHtml }}
+                  />
+                </motion.button>
+              ))}
+            </motion.div>
+          </section>
+        )}
+
         {/* Media Gallery */}
         {media.length > 0 && (
-          <section className="mx-auto max-w-6xl mb-20">
+          <section className="mx-auto max-w-6xl">
             <motion.h2
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -152,51 +197,6 @@ export function ProjectDetail() {
                     )}
                   </div>
                 </motion.div>
-              ))}
-            </motion.div>
-          </section>
-        )}
-
-        {/* Updates Timeline */}
-        {updates.length > 0 && (
-          <section className="mx-auto max-w-4xl">
-            <motion.h2
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="text-2xl sm:text-3xl font-bold mb-8"
-            >
-              <span className="text-accent">Updates</span>
-            </motion.h2>
-            <motion.div
-              variants={container}
-              initial="hidden"
-              whileInView="show"
-              viewport={{ once: true }}
-              className="space-y-6"
-            >
-              {updates.map((update) => (
-                <motion.button
-                  key={update.date}
-                  variants={item}
-                  onClick={() => setActiveUpdate(update)}
-                  className="group w-full text-left glass rounded-2xl p-6 border border-border cursor-pointer hover:border-primary/30 hover:shadow-[0_0_40px_rgba(0,229,255,0.12)] hover:scale-[1.01] transition-all duration-300"
-                >
-                  <div className="flex items-center gap-3 mb-3">
-                    <h3 className="font-semibold text-text flex-1">{update.title}</h3>
-                    <span className="px-3 py-1 rounded-full bg-surface-light text-xs font-mono text-text-muted shrink-0">
-                      {update.date}
-                    </span>
-                    <ChevronRight
-                      size={16}
-                      className="text-text-muted opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 group-hover:text-primary transition-all duration-300 shrink-0"
-                    />
-                  </div>
-                  <div
-                    className="relative max-h-24 overflow-hidden text-sm text-text-muted leading-relaxed update-preview"
-                    dangerouslySetInnerHTML={{ __html: update.bodyHtml }}
-                  />
-                </motion.button>
               ))}
             </motion.div>
           </section>
@@ -254,43 +254,43 @@ export function ProjectDetail() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: 40 }}
               transition={{ duration: 0.25 }}
-              className="fixed inset-0 z-[101] flex flex-col"
+              className="fixed inset-0 z-[101] flex items-center justify-center p-6"
+              onClick={() => setActiveUpdate(null)}
             >
-              {/* Close button */}
-              <div className="flex justify-end p-6">
-                <button
-                  onClick={() => setActiveUpdate(null)}
-                  className="p-2 text-text-muted hover:text-primary transition-colors"
-                >
-                  <X size={24} />
-                </button>
-              </div>
-
-              {/* Scrollable content */}
-              <div className="flex-1 overflow-y-auto px-6 pb-6">
-                <div className="mx-auto max-w-3xl">
-                  <div className="glass rounded-2xl p-8 border border-border">
-                    <div className="flex items-center gap-3 mb-6">
-                      <h2 className="text-2xl font-bold text-text flex-1">
-                        {activeUpdate.title}
-                      </h2>
-                      <span className="px-3 py-1 rounded-full bg-surface-light text-xs font-mono text-text-muted shrink-0">
-                        {activeUpdate.date}
-                      </span>
-                    </div>
-                    <div
-                      className="update-content text-text-muted leading-relaxed"
-                      dangerouslySetInnerHTML={{ __html: activeUpdate.bodyHtml }}
-                    />
-                  </div>
+              <div
+                className="w-full max-w-3xl max-h-[85vh] flex flex-col rounded-2xl glass border border-border overflow-hidden"
+                onClick={(e) => e.stopPropagation()}
+              >
+                {/* Header */}
+                <div className="flex items-center gap-3 p-6 pb-0">
+                  <h2 className="text-2xl font-bold text-text flex-1">
+                    {activeUpdate.title}
+                  </h2>
+                  <span className="px-3 py-1 rounded-full bg-surface-light text-xs font-mono text-text-muted shrink-0">
+                    {activeUpdate.date}
+                  </span>
+                  <button
+                    onClick={() => setActiveUpdate(null)}
+                    className="p-2 text-text-muted hover:text-primary transition-colors shrink-0"
+                  >
+                    <X size={20} />
+                  </button>
                 </div>
-              </div>
 
-              {/* Fixed bottom footer — comment thread placeholder */}
-              <div className="border-t border-border glass px-6 py-4">
-                <div className="mx-auto max-w-3xl flex items-center gap-3 text-text-muted">
-                  <MessageSquare size={16} />
-                  <span className="text-sm">Comments coming soon...</span>
+                {/* Scrollable content */}
+                <div className="flex-1 overflow-y-auto p-6">
+                  <div
+                    className="update-content text-text-muted leading-relaxed"
+                    dangerouslySetInnerHTML={{ __html: activeUpdate.bodyHtml }}
+                  />
+                </div>
+
+                {/* Sticky bottom footer — comment thread placeholder */}
+                <div className="border-t border-border px-6 py-4">
+                  <div className="flex items-center gap-3 text-text-muted">
+                    <MessageSquare size={16} />
+                    <span className="text-sm">Comments coming soon...</span>
+                  </div>
                 </div>
               </div>
             </motion.div>

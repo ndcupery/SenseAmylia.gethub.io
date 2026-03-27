@@ -392,13 +392,13 @@ function MediaCard({
               </div>
             </div>
           )}
-        </div>
 
-        {/* Filename label */}
-        <div className="px-3 py-2">
-          <span className="text-xs text-text-muted font-mono">
-            {media.filename}
-          </span>
+          {/* Filename label — bottom overlay */}
+          <div className="absolute bottom-0 left-0 right-0 px-3 py-2 bg-gradient-to-t from-background/80 to-transparent">
+            <span className="text-xs text-text group-hover:text-primary transition-colors font-medium font-mono">
+              {media.filename}
+            </span>
+          </div>
         </div>
       </div>
     </motion.div>

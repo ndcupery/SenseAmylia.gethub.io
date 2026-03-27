@@ -6,19 +6,19 @@ import { Card, CardContent } from "@/components/ui/card";
 
 const socials = [
   {
-    name: "YouTube",
+    name: "TikTok",
     handle: "@PhazerLabs",
-    url: "https://youtube.com/@PhazerLabs",
+    url: "https://tiktok.com/@PhazerLabs",
   },
   {
-    name: "GitHub",
-    handle: "PhazerLabs",
-    url: "https://github.com/PhazerLabs",
+    name: "Instagram",
+    handle: "@phazervisuals",
+    url: "https://instagram.com/phazervisuals",
   },
   {
-    name: "Twitter / X",
-    handle: "@PhazerLabs",
-    url: "https://x.com/PhazerLabs",
+    name: "Facebook",
+    handle: "phazervisuals",
+    url: "https://facebook.com/phazervisuals",
   },
 ];
 
