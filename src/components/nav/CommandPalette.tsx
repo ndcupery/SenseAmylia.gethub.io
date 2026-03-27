@@ -19,11 +19,11 @@ const commands = [
     to: "/about" as const,
   },
   {
-    id: "gallery",
-    label: "Gallery",
+    id: "laboratory",
+    label: "Laboratory",
     description: "Browse projects and experiments",
     icon: Image,
-    to: "/gallery" as const,
+    to: "/laboratory" as const,
   },
   {
     id: "booking",

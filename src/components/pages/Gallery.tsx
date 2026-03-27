@@ -39,7 +39,7 @@ const statusColors: Record<ProjectStatus, string> = {
   archived: "text-text-muted",
 };
 
-export function Gallery() {
+export function Laboratory() {
   const [contentFilter, setContentFilter] = useState<ContentFilter>("all");
   const [activeTag, setActiveTag] = useState<string | null>(null);
   const [visibleCount, setVisibleCount] = useState(BATCH_SIZE);
@@ -137,7 +137,7 @@ export function Gallery() {
             transition={{ duration: 0.6, delay: 0.35 }}
           >
             <h1 className="text-4xl sm:text-6xl font-black tracking-tight mb-6">
-              <span className="gradient-text">Gallery</span>
+              <span className="gradient-text">Laboratory</span>
             </h1>
             <p className="text-lg text-text-muted max-w-2xl mx-auto leading-relaxed">
               Projects, experiments, and ongoing work from the lab.
@@ -306,7 +306,7 @@ function ProjectCard({
   return (
     <motion.div variants={item} layout>
       <Link
-        to="/gallery/$projectSlug"
+        to="/laboratory/$projectSlug"
         params={{ projectSlug: project.slug }}
         className="block"
       >

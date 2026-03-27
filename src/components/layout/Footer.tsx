@@ -17,10 +17,10 @@ export function Footer() {
               About
             </Link>
             <Link
-              to="/gallery"
+              to="/laboratory"
               className="hover:text-primary transition-colors"
             >
-              Gallery
+              Laboratory
             </Link>
             <Link
               to="/contact"

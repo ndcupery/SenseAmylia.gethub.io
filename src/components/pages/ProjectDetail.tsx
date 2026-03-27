@@ -2,7 +2,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "@tanstack/react-router";
 import { ArrowLeft, Calendar, ChevronRight, Circle, MessageSquare, X } from "lucide-react";
-import { Route } from "@/routes/gallery/$projectSlug";
+import { Route } from "@/routes/laboratory/$projectSlug";
 import { getProjectBySlug } from "@/data/projects";
 import { ProjectHero } from "@/components/ui/ProjectVisual";
 import { getProjectUpdates } from "@/lib/loadUpdates";
@@ -47,7 +47,7 @@ export function ProjectDetail() {
     title: project ? `${project.title} | Phazer Labs` : undefined,
     description: metaDescription,
     ogUrl: project
-      ? `https://phazerlabs.com/gallery/${project.slug}`
+      ? `https://phazerlabs.com/laboratory/${project.slug}`
       : undefined,
     ogImage: project?.thumbnail,
   });
@@ -60,10 +60,10 @@ export function ProjectDetail() {
           <p className="text-text-muted mb-8">
             The project you&apos;re looking for doesn&apos;t exist.
           </p>
-          <Link to="/gallery">
+          <Link to="/laboratory">
             <Button>
               <ArrowLeft size={16} />
-              Back to Gallery
+              Back to Laboratory
             </Button>
           </Link>
         </div>
@@ -330,11 +330,11 @@ function HeroOverlay({
       <div className="absolute bottom-0 left-0 right-0 px-6 pb-10">
         <div className="mx-auto max-w-6xl">
           <Link
-            to="/gallery"
+            to="/laboratory"
             className="inline-flex items-center gap-1.5 text-sm text-text-muted hover:text-primary transition-colors mb-6"
           >
             <ArrowLeft size={14} />
-            Back to Gallery
+            Back to Laboratory
           </Link>
           <motion.h1
             initial={{ opacity: 0, y: 20 }}

@@ -12,8 +12,8 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as GalleryIndexRouteImport } from './routes/gallery/index'
-import { Route as GalleryProjectSlugRouteImport } from './routes/gallery/$projectSlug'
+import { Route as LaboratoryIndexRouteImport } from './routes/laboratory/index'
+import { Route as LaboratoryProjectSlugRouteImport } from './routes/laboratory/$projectSlug'
 
 const ContactRoute = ContactRouteImport.update({
   id: '/contact',
@@ -30,14 +30,14 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const GalleryIndexRoute = GalleryIndexRouteImport.update({
-  id: '/gallery/',
-  path: '/gallery/',
+const LaboratoryIndexRoute = LaboratoryIndexRouteImport.update({
+  id: '/laboratory/',
+  path: '/laboratory/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const GalleryProjectSlugRoute = GalleryProjectSlugRouteImport.update({
-  id: '/gallery/$projectSlug',
-  path: '/gallery/$projectSlug',
+const LaboratoryProjectSlugRoute = LaboratoryProjectSlugRouteImport.update({
+  id: '/laboratory/$projectSlug',
+  path: '/laboratory/$projectSlug',
   getParentRoute: () => rootRouteImport,
 } as any)
 
@@ -45,44 +45,49 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/contact': typeof ContactRoute
-  '/gallery/$projectSlug': typeof GalleryProjectSlugRoute
-  '/gallery/': typeof GalleryIndexRoute
+  '/laboratory/$projectSlug': typeof LaboratoryProjectSlugRoute
+  '/laboratory/': typeof LaboratoryIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/contact': typeof ContactRoute
-  '/gallery/$projectSlug': typeof GalleryProjectSlugRoute
-  '/gallery': typeof GalleryIndexRoute
+  '/laboratory/$projectSlug': typeof LaboratoryProjectSlugRoute
+  '/laboratory': typeof LaboratoryIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/contact': typeof ContactRoute
-  '/gallery/$projectSlug': typeof GalleryProjectSlugRoute
-  '/gallery/': typeof GalleryIndexRoute
+  '/laboratory/$projectSlug': typeof LaboratoryProjectSlugRoute
+  '/laboratory/': typeof LaboratoryIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/about' | '/contact' | '/gallery/$projectSlug' | '/gallery/'
+  fullPaths:
+    | '/'
+    | '/about'
+    | '/contact'
+    | '/laboratory/$projectSlug'
+    | '/laboratory/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about' | '/contact' | '/gallery/$projectSlug' | '/gallery'
+  to: '/' | '/about' | '/contact' | '/laboratory/$projectSlug' | '/laboratory'
   id:
     | '__root__'
     | '/'
     | '/about'
     | '/contact'
-    | '/gallery/$projectSlug'
-    | '/gallery/'
+    | '/laboratory/$projectSlug'
+    | '/laboratory/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
   ContactRoute: typeof ContactRoute
-  GalleryProjectSlugRoute: typeof GalleryProjectSlugRoute
-  GalleryIndexRoute: typeof GalleryIndexRoute
+  LaboratoryProjectSlugRoute: typeof LaboratoryProjectSlugRoute
+  LaboratoryIndexRoute: typeof LaboratoryIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -108,18 +113,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/gallery/': {
-      id: '/gallery/'
-      path: '/gallery'
-      fullPath: '/gallery/'
-      preLoaderRoute: typeof GalleryIndexRouteImport
+    '/laboratory/': {
+      id: '/laboratory/'
+      path: '/laboratory'
+      fullPath: '/laboratory/'
+      preLoaderRoute: typeof LaboratoryIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/gallery/$projectSlug': {
-      id: '/gallery/$projectSlug'
-      path: '/gallery/$projectSlug'
-      fullPath: '/gallery/$projectSlug'
-      preLoaderRoute: typeof GalleryProjectSlugRouteImport
+    '/laboratory/$projectSlug': {
+      id: '/laboratory/$projectSlug'
+      path: '/laboratory/$projectSlug'
+      fullPath: '/laboratory/$projectSlug'
+      preLoaderRoute: typeof LaboratoryProjectSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
@@ -129,8 +134,8 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
   ContactRoute: ContactRoute,
-  GalleryProjectSlugRoute: GalleryProjectSlugRoute,
-  GalleryIndexRoute: GalleryIndexRoute,
+  LaboratoryProjectSlugRoute: LaboratoryProjectSlugRoute,
+  LaboratoryIndexRoute: LaboratoryIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

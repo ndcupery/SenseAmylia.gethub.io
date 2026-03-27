@@ -84,7 +84,7 @@ export function Home() {
               </p>
 
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                <Link to="/about">
+                <Link to="/laboratory">
                   <Button size="lg">
                     Explore the Lab
                     <ArrowRight size={18} />
