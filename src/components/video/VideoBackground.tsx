@@ -6,6 +6,12 @@ function pickRandom<T>(items: T[]): T {
 
 const INTERACTION_EVENTS = ["touchstart", "scroll", "click"] as const;
 
+const MIN_RATE = 0.2;
+const MAX_RATE = 2.5;
+const VELOCITY_SCALE = 1.15;
+const DECAY = 0.04;
+const LERP = 0.06;
+
 interface VideoBackgroundProps {
   sources: string[];
 }
@@ -15,6 +21,11 @@ export function VideoBackground({ sources }: VideoBackgroundProps) {
   const [src] = useState(() => pickRandom(sources));
   const videoRef = useRef<HTMLVideoElement>(null);
   const listenerRef = useRef<(() => void) | null>(null);
+  const targetRateRef = useRef(MIN_RATE);
+  const currentRateRef = useRef(MIN_RATE);
+  const lastScrollY = useRef(typeof window !== "undefined" ? window.scrollY : 0);
+  const lastScrollTime = useRef(performance.now());
+  const rafRef = useRef(0);
 
   const cleanupListeners = useCallback(() => {
     if (listenerRef.current) {
@@ -54,6 +65,39 @@ export function VideoBackground({ sources }: VideoBackgroundProps) {
     attemptPlay();
     return cleanupListeners;
   }, [attemptPlay, cleanupListeners]);
+
+  // Scroll velocity → playbackRate
+  useEffect(() => {
+    function onScroll() {
+      const now = performance.now();
+      const dy = Math.abs(window.scrollY - lastScrollY.current);
+      const dt = now - lastScrollTime.current;
+      const velocity = dt > 0 ? dy / dt : 0; // px/ms
+      lastScrollY.current = window.scrollY;
+      lastScrollTime.current = now;
+      targetRateRef.current = Math.min(MIN_RATE + velocity * VELOCITY_SCALE, MAX_RATE);
+    }
+
+    function tick() {
+      const video = videoRef.current;
+      if (video) {
+        // Decay target back toward idle rate
+        targetRateRef.current += (MIN_RATE - targetRateRef.current) * DECAY;
+        // Lerp current rate toward target
+        currentRateRef.current += (targetRateRef.current - currentRateRef.current) * LERP;
+        video.playbackRate = currentRateRef.current;
+      }
+      rafRef.current = requestAnimationFrame(tick);
+    }
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    rafRef.current = requestAnimationFrame(tick);
+
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      cancelAnimationFrame(rafRef.current);
+    };
+  }, []);
 
   if (!sources.length) return null;
 
