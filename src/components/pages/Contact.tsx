@@ -1,6 +1,17 @@
 import { useState, type FormEvent } from "react";
 import { motion } from "framer-motion";
-import { Send, Mail, MapPin, Calendar, ExternalLink } from "lucide-react";
+import {
+  Send,
+  Mail,
+  MapPin,
+  Calendar,
+  ExternalLink,
+  Palette,
+  Monitor,
+  Zap,
+  MessageSquare,
+  Clock,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 
@@ -24,11 +35,57 @@ const socials = [
 
 const eventTypes = [
   "Festival",
+  "Multi-Day Festival",
   "Concert",
+  "Club Night",
   "Private Event",
   "Corporate",
   "Other",
 ];
+
+const valueProps = [
+  {
+    icon: Palette,
+    title: "Custom Visuals, Every Show",
+    description:
+      "Visuals designed and programmed for your lineup, theme, and venue. No generic loops.",
+    color: "text-primary",
+  },
+  {
+    icon: Monitor,
+    title: "Full Rig, Ready to Go",
+    description:
+      "Self-contained setup with projectors, media servers, and backup systems. Plug in and go.",
+    color: "text-accent",
+  },
+  {
+    icon: Zap,
+    title: "Festival-Tested",
+    description:
+      "Experienced across multi-stage festivals, intimate club shows, and corporate events.",
+    color: "text-warm",
+  },
+  {
+    icon: MessageSquare,
+    title: "Collaborative Process",
+    description:
+      "I work directly with you to match the visual identity to your artists, brand, and audience.",
+    color: "text-secondary",
+  },
+];
+
+const valuePropContainer = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: { staggerChildren: 0.1, delayChildren: 0.2 },
+  },
+};
+
+const valuePropItem = {
+  hidden: { opacity: 0, y: 20 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.4 } },
+};
 
 const inputClass =
   "w-full h-12 px-4 py-3 rounded-xl bg-surface-light border border-border text-text text-base placeholder:text-text-muted/50 outline-none focus:border-primary/50 focus:shadow-[0_0_15px_rgba(0,229,255,0.1)] transition-all appearance-none";
@@ -52,13 +109,47 @@ export function Contact() {
             transition={{ duration: 0.6, delay: 0.35 }}
           >
             <h1 className="text-4xl sm:text-6xl font-black tracking-tight mb-6">
-              Book{" "}
-              <span className="gradient-text">Phazer Visuals</span>
+              Elevate{" "}
+              <span className="gradient-text">Your Stage</span>
             </h1>
             <p className="text-lg text-text-muted max-w-xl mx-auto leading-relaxed">
-              Bringing immersive live visuals to festivals and events across the
-              Midwest. Let&apos;s make your next event unforgettable.
+              Custom live visuals that transform your festival, show, or event
+              into an immersive experience. Trusted by promoters and producers
+              across the Midwest.
             </p>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Value Props */}
+      <section className="px-6 mb-16">
+        <div className="mx-auto max-w-6xl">
+          <motion.div
+            variants={valuePropContainer}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true }}
+            className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6"
+          >
+            {valueProps.map((prop) => (
+              <motion.div key={prop.title} variants={valuePropItem}>
+                <Card className="h-full">
+                  <CardContent className="space-y-3">
+                    <div
+                      className={`w-10 h-10 rounded-lg bg-surface-light flex items-center justify-center ${prop.color}`}
+                    >
+                      <prop.icon size={20} />
+                    </div>
+                    <h3 className="font-semibold text-text text-sm">
+                      {prop.title}
+                    </h3>
+                    <p className="text-sm text-text-muted leading-relaxed">
+                      {prop.description}
+                    </p>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            ))}
           </motion.div>
         </div>
       </section>
@@ -89,8 +180,9 @@ export function Contact() {
                         Booking Request Sent!
                       </h3>
                       <p className="text-text-muted">
-                        Thanks for reaching out. I&apos;ll get back to you soon
-                        to discuss your event.
+                        Thanks for reaching out. I&apos;ll be in touch within 48
+                        hours to discuss your event and put together a visual
+                        plan.
                       </p>
                       <Button
                         variant="ghost"
@@ -110,7 +202,7 @@ export function Contact() {
                           <input
                             type="text"
                             required
-                            placeholder="Your name"
+                            placeholder="Your name or organization"
                             className={inputClass}
                           />
                         </div>
@@ -189,7 +281,7 @@ export function Contact() {
                         </label>
                         <textarea
                           rows={4}
-                          placeholder="Tell me about your event — expected attendance, vibe, stage setup, anything relevant..."
+                          placeholder="Tell me about your event — headliners, expected attendance, stage dimensions, visual vibe, anything that helps me prepare..."
                           className={`${inputClass} !h-auto resize-none`}
                         />
                       </div>
@@ -248,6 +340,19 @@ export function Contact() {
                       </p>
                       <p className="text-sm text-text-muted">
                         hello@phazerlabs.com
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <div className="w-9 h-9 rounded-lg bg-warm/10 flex items-center justify-center shrink-0">
+                      <Clock size={16} className="text-warm" />
+                    </div>
+                    <div>
+                      <p className="text-sm font-medium text-text">
+                        Response Time
+                      </p>
+                      <p className="text-sm text-text-muted">
+                        Typically within 24–48 hours
                       </p>
                     </div>
                   </div>
