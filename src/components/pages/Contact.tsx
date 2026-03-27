@@ -50,6 +50,8 @@ const valueProps = [
     description:
       "Visuals designed and programmed for your lineup, theme, and venue. No generic loops.",
     color: "text-primary",
+    borderColor: "border-primary/50",
+    numberColor: "text-primary/10",
   },
   {
     icon: Monitor,
@@ -57,6 +59,8 @@ const valueProps = [
     description:
       "Self-contained setup with projectors, media servers, and backup systems. Plug in and go.",
     color: "text-accent",
+    borderColor: "border-accent/50",
+    numberColor: "text-accent/10",
   },
   {
     icon: Zap,
@@ -64,6 +68,8 @@ const valueProps = [
     description:
       "Experienced across multi-stage festivals, intimate club shows, and corporate events.",
     color: "text-warm",
+    borderColor: "border-warm/50",
+    numberColor: "text-warm/10",
   },
   {
     icon: MessageSquare,
@@ -71,6 +77,8 @@ const valueProps = [
     description:
       "I work directly with you to match the visual identity to your artists, brand, and audience.",
     color: "text-secondary",
+    borderColor: "border-secondary/50",
+    numberColor: "text-secondary/10",
   },
 ];
 
@@ -117,39 +125,6 @@ export function Contact() {
               into an immersive experience. Trusted by promoters and producers
               across the Midwest.
             </p>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Value Props */}
-      <section className="px-6 mb-16">
-        <div className="mx-auto max-w-6xl">
-          <motion.div
-            variants={valuePropContainer}
-            initial="hidden"
-            whileInView="show"
-            viewport={{ once: true }}
-            className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6"
-          >
-            {valueProps.map((prop) => (
-              <motion.div key={prop.title} variants={valuePropItem}>
-                <Card className="h-full">
-                  <CardContent className="space-y-3">
-                    <div
-                      className={`w-10 h-10 rounded-lg bg-surface-light flex items-center justify-center ${prop.color}`}
-                    >
-                      <prop.icon size={20} />
-                    </div>
-                    <h3 className="font-semibold text-text text-sm">
-                      {prop.title}
-                    </h3>
-                    <p className="text-sm text-text-muted leading-relaxed">
-                      {prop.description}
-                    </p>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            ))}
           </motion.div>
         </div>
       </section>
@@ -393,6 +368,44 @@ export function Contact() {
               </Card>
             </motion.div>
           </div>
+        </div>
+      </section>
+
+      {/* Value Props */}
+      <section className="px-6 mt-16">
+        <div className="mx-auto max-w-6xl">
+          <motion.div
+            variants={valuePropContainer}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true }}
+            className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6"
+          >
+            {valueProps.map((prop, index) => (
+              <motion.div key={prop.title} variants={valuePropItem}>
+                <Card className={`h-full border-l-2 ${prop.borderColor} relative overflow-hidden`}>
+                  <CardContent className="space-y-3 relative">
+                    <span
+                      className={`absolute top-2 right-3 text-6xl font-black ${prop.numberColor} select-none pointer-events-none leading-none`}
+                    >
+                      {String(index + 1).padStart(2, "0")}
+                    </span>
+                    <div
+                      className={`w-12 h-12 rounded-lg bg-surface-light flex items-center justify-center ring-1 ring-current/20 ${prop.color}`}
+                    >
+                      <prop.icon size={22} />
+                    </div>
+                    <h3 className="font-semibold text-text text-sm">
+                      {prop.title}
+                    </h3>
+                    <p className="text-sm text-text-muted leading-relaxed">
+                      {prop.description}
+                    </p>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            ))}
+          </motion.div>
         </div>
       </section>
     </div>
