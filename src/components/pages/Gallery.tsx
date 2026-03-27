@@ -362,47 +362,44 @@ function MediaCard({
 }) {
   return (
     <motion.div variants={item} layout>
-      <div className="relative aspect-video rounded-xl overflow-hidden group cursor-pointer">
-        {media.type === "image" ? (
-          <button
-            onClick={onLightbox}
-            className="block w-full h-full"
-          >
-            <img
+      <div className="glass rounded-xl overflow-hidden group cursor-pointer">
+        <div className="relative aspect-video overflow-hidden">
+          {media.type === "image" ? (
+            <button
+              onClick={onLightbox}
+              className="block w-full h-full"
+            >
+              <img
+                src={media.src}
+                alt={media.alt}
+                loading="lazy"
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+              />
+            </button>
+          ) : (
+            <video
               src={media.src}
-              alt={media.alt}
-              loading="lazy"
-              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+              controls
+              className="w-full h-full object-cover"
             />
-          </button>
-        ) : (
-          <video
-            src={media.src}
-            controls
-            className="w-full h-full object-cover"
-          />
-        )}
+          )}
 
-        {/* Video play icon overlay */}
-        {media.type === "video" && (
-          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-            <div className="w-12 h-12 rounded-full bg-background/60 backdrop-blur-sm flex items-center justify-center">
-              <Play size={20} className="text-primary ml-0.5" fill="currentColor" />
+          {/* Video play icon overlay */}
+          {media.type === "video" && (
+            <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+              <div className="w-12 h-12 rounded-full bg-background/60 backdrop-blur-sm flex items-center justify-center">
+                <Play size={20} className="text-primary ml-0.5" fill="currentColor" />
+              </div>
             </div>
-          </div>
-        )}
+          )}
+        </div>
 
-        {/* Source project label */}
-        <Link
-          to="/gallery/$projectSlug"
-          params={{ projectSlug: media.projectSlug }}
-          className="absolute bottom-0 left-0 right-0 px-3 py-2 bg-gradient-to-t from-background/80 to-transparent"
-          onClick={(e) => e.stopPropagation()}
-        >
-          <span className="text-xs text-text-muted hover:text-primary transition-colors">
-            {media.projectTitle}
+        {/* Filename label */}
+        <div className="px-3 py-2">
+          <span className="text-xs text-text-muted font-mono">
+            {media.filename}
           </span>
-        </Link>
+        </div>
       </div>
     </motion.div>
   );

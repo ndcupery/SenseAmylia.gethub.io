@@ -129,26 +129,28 @@ export function ProjectDetail() {
             >
               {media.map((mediaItem, index) => (
                 <motion.div key={index} variants={item}>
-                  {mediaItem.type === "image" ? (
-                    <button
-                      onClick={() => setLightboxIndex(index)}
-                      className="block w-full aspect-video rounded-xl overflow-hidden group cursor-pointer"
-                    >
-                      <img
-                        src={mediaItem.src}
-                        alt={mediaItem.alt}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                      />
-                    </button>
-                  ) : (
-                    <div className="aspect-video rounded-xl overflow-hidden">
-                      <video
-                        src={mediaItem.src}
-                        controls
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                  )}
+                  <div className="glass rounded-xl overflow-hidden">
+                    {mediaItem.type === "image" ? (
+                      <button
+                        onClick={() => setLightboxIndex(index)}
+                        className="block w-full aspect-video overflow-hidden group cursor-pointer"
+                      >
+                        <img
+                          src={mediaItem.src}
+                          alt={mediaItem.alt}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        />
+                      </button>
+                    ) : (
+                      <div className="aspect-video overflow-hidden">
+                        <video
+                          src={mediaItem.src}
+                          controls
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                    )}
+                  </div>
                 </motion.div>
               ))}
             </motion.div>
@@ -181,13 +183,13 @@ export function ProjectDetail() {
                   className="group w-full text-left glass rounded-2xl p-6 border border-border cursor-pointer hover:border-primary/30 hover:shadow-[0_0_40px_rgba(0,229,255,0.12)] hover:scale-[1.01] transition-all duration-300"
                 >
                   <div className="flex items-center gap-3 mb-3">
-                    <span className="px-3 py-1 rounded-full bg-surface-light text-xs font-mono text-text-muted">
+                    <h3 className="font-semibold text-text flex-1">{update.title}</h3>
+                    <span className="px-3 py-1 rounded-full bg-surface-light text-xs font-mono text-text-muted shrink-0">
                       {update.date}
                     </span>
-                    <h3 className="font-semibold text-text flex-1">{update.title}</h3>
                     <ChevronRight
                       size={16}
-                      className="text-text-muted opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 group-hover:text-primary transition-all duration-300"
+                      className="text-text-muted opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 group-hover:text-primary transition-all duration-300 shrink-0"
                     />
                   </div>
                   <div
@@ -269,13 +271,13 @@ export function ProjectDetail() {
                 <div className="mx-auto max-w-3xl">
                   <div className="glass rounded-2xl p-8 border border-border">
                     <div className="flex items-center gap-3 mb-6">
-                      <span className="px-3 py-1 rounded-full bg-surface-light text-xs font-mono text-text-muted">
+                      <h2 className="text-2xl font-bold text-text flex-1">
+                        {activeUpdate.title}
+                      </h2>
+                      <span className="px-3 py-1 rounded-full bg-surface-light text-xs font-mono text-text-muted shrink-0">
                         {activeUpdate.date}
                       </span>
                     </div>
-                    <h2 className="text-2xl font-bold text-text mb-6">
-                      {activeUpdate.title}
-                    </h2>
                     <div
                       className="update-content text-text-muted leading-relaxed"
                       dangerouslySetInnerHTML={{ __html: activeUpdate.bodyHtml }}

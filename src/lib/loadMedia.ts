@@ -33,6 +33,7 @@ export function getProjectMedia(slug: string): MediaItem[] {
       type,
       src: url,
       alt: filenameToAlt(filename),
+      filename,
     });
   }
 

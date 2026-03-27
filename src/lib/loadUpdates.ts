@@ -45,14 +45,27 @@ export function getProjectUpdates(slug: string): ProjectUpdate[] {
     if (!path.startsWith(prefix)) continue;
     const filename = path.split("/").pop()!;
     const fileDate = filename.replace(".md", "");
-    const { title, date, body } = parseFrontmatter(raw);
-    const resolvedBody = resolveMediaPaths(body, slug);
+    const { title: fmTitle, date, body } = parseFrontmatter(raw);
+
+    // Extract leading # heading as title if no frontmatter title
+    let title = fmTitle;
+    let contentBody = body;
+    if (!title) {
+      const h1Match = contentBody.match(/^# (.+)$/m);
+      if (h1Match) {
+        title = h1Match[1].trim();
+        // Remove the heading line from body so it doesn't render twice
+        contentBody = contentBody.replace(/^# .+\n?/, "").trim();
+      }
+    }
+
+    const resolvedBody = resolveMediaPaths(contentBody, slug);
     const bodyHtml = marked.parse(resolvedBody, { async: false }) as string;
 
     updates.push({
       date: date ?? fileDate,
       title,
-      body,
+      body: contentBody,
       bodyHtml,
     });
   }
