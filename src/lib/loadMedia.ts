@@ -1,7 +1,7 @@
 import type { MediaItem } from "@/data/projects";
 
 const mediaFiles = import.meta.glob(
-  "/public/content/projects/*/media/*.{jpg,jpeg,png,gif,webp,mp4,webm}",
+  "/src/content/projects/*/media/*.{jpg,jpeg,png,gif,webp,mp4,webm}",
   { eager: true, query: "?url", import: "default" },
 ) as Record<string, string>;
 
@@ -15,8 +15,14 @@ function filenameToAlt(filename: string): string {
     .replace(/\b\w/g, (c) => c.toUpperCase());
 }
 
+/** Look up the Vite-resolved URL for a single media file by project slug and filename. */
+export function getMediaUrl(slug: string, filename: string): string {
+  const key = `/src/content/projects/${slug}/media/${filename}`;
+  return mediaFiles[key] ?? filename;
+}
+
 export function getProjectMedia(slug: string): MediaItem[] {
-  const prefix = `/public/content/projects/${slug}/media/`;
+  const prefix = `/src/content/projects/${slug}/media/`;
   const items: MediaItem[] = [];
 
   for (const [path, url] of Object.entries(mediaFiles)) {

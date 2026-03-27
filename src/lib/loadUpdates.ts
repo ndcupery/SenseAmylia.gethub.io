@@ -1,4 +1,5 @@
 import { marked } from "marked";
+import { getMediaUrl } from "./loadMedia";
 
 export interface ProjectUpdate {
   date: string;
@@ -8,7 +9,7 @@ export interface ProjectUpdate {
 }
 
 const updateFiles = import.meta.glob(
-  "/public/content/projects/*/updates/*.md",
+  "/src/content/projects/*/updates/*.md",
   { eager: true, query: "?raw", import: "default" },
 ) as Record<string, string>;
 
@@ -29,16 +30,18 @@ function parseFrontmatter(raw: string): {
 }
 
 function resolveMediaPaths(markdown: string, slug: string): string {
-  const base = `${import.meta.env.BASE_URL}content/projects/${slug}/`;
-  // Resolve image/link references like ![alt](media/foo.jpg) or [text](media/foo.jpg)
+  // Resolve image/link references like ![alt](media/foo.jpg) against Vite-imported URLs
   return markdown.replace(
-    /(!?\[[^\]]*\]\()(?:\.\/)?media\//g,
-    `$1${base}media/`,
+    /(!?\[[^\]]*\]\()(?:\.\/)?media\/([^)]+)\)/g,
+    (_match, prefix: string, filename: string) => {
+      const resolved = getMediaUrl(slug, filename);
+      return `${prefix}${resolved})`;
+    },
   );
 }
 
 export function getProjectUpdates(slug: string): ProjectUpdate[] {
-  const prefix = `/public/content/projects/${slug}/updates/`;
+  const prefix = `/src/content/projects/${slug}/updates/`;
   const updates: ProjectUpdate[] = [];
 
   for (const [path, raw] of Object.entries(updateFiles)) {
