@@ -172,15 +172,18 @@ export function ProjectDetail() {
 
         {/* Media Gallery */}
         {media.length > 0 && (
-          <section className="mx-auto max-w-6xl">
-            <motion.h2
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="text-2xl sm:text-3xl font-bold mb-8"
-            >
-              <span className="text-primary">Media</span>
-            </motion.h2>
+          <section>
+            <div className="mx-auto max-w-4xl">
+              <motion.h2
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                className="text-2xl sm:text-3xl font-bold mb-8"
+              >
+                <span className="text-primary">Media</span>
+              </motion.h2>
+            </div>
+            <div className="mx-auto max-w-6xl">
             <motion.div
               variants={container}
               initial="hidden"
@@ -215,6 +218,7 @@ export function ProjectDetail() {
                 </motion.div>
               ))}
             </motion.div>
+            </div>
           </section>
         )}
       </div>
