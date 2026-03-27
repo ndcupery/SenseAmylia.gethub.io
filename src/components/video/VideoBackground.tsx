@@ -1,8 +1,10 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 function pickRandom<T>(items: T[]): T {
   return items[Math.floor(Math.random() * items.length)];
 }
+
+const INTERACTION_EVENTS = ["touchstart", "scroll", "click"] as const;
 
 interface VideoBackgroundProps {
   sources: string[];
@@ -11,10 +13,47 @@ interface VideoBackgroundProps {
 export function VideoBackground({ sources }: VideoBackgroundProps) {
   const [loaded, setLoaded] = useState(false);
   const [src] = useState(() => pickRandom(sources));
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const listenerRef = useRef<(() => void) | null>(null);
+
+  const cleanupListeners = useCallback(() => {
+    if (listenerRef.current) {
+      for (const evt of INTERACTION_EVENTS) {
+        document.removeEventListener(evt, listenerRef.current);
+      }
+      listenerRef.current = null;
+    }
+  }, []);
+
+  const attemptPlay = useCallback(() => {
+    const video = videoRef.current;
+    if (!video) return;
+    // Ensure muted via JS — iOS sometimes needs this set programmatically
+    video.muted = true;
+    video.play().catch(() => {
+      // Autoplay was blocked — retry on first user interaction
+      cleanupListeners();
+      const playOnInteraction = () => {
+        video.play().catch(() => {});
+        cleanupListeners();
+      };
+      listenerRef.current = playOnInteraction;
+      for (const evt of INTERACTION_EVENTS) {
+        document.addEventListener(evt, playOnInteraction, { passive: true });
+      }
+    });
+  }, [cleanupListeners]);
 
   const handleCanPlay = useCallback(() => {
     setLoaded(true);
-  }, []);
+    attemptPlay();
+  }, [attemptPlay]);
+
+  // Also attempt play on mount in case canplay already fired
+  useEffect(() => {
+    attemptPlay();
+    return cleanupListeners;
+  }, [attemptPlay, cleanupListeners]);
 
   if (!sources.length) return null;
 
@@ -24,6 +63,7 @@ export function VideoBackground({ sources }: VideoBackgroundProps) {
       style={{ opacity: loaded ? 1 : 0 }}
     >
       <video
+        ref={videoRef}
         src={src}
         autoPlay
         muted
