@@ -7,6 +7,7 @@ export interface MediaItem {
   type: "image" | "video";
   src: string;
   alt: string;
+  filename: string;
   tags?: string[];
   thumbnail?: string;
 }
