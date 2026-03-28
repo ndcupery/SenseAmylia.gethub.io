@@ -9,8 +9,8 @@ const INTERACTION_EVENTS = ["touchstart", "scroll", "click"] as const;
 const MIN_RATE = 0.2;
 const MAX_RATE = 2.5;
 const VELOCITY_SCALE = 1.15;
-const DECAY = 0.04;
-const LERP = 0.06;
+const DECAY = 0.012;
+const LERP = 0.025;
 
 interface VideoBackgroundProps {
   sources: string[];
