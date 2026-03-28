@@ -79,4 +79,28 @@ export const events: Event[] = [
     city: "Minneapolis, MN",
     tags: ["live-visuals", "vj", "bass-music", "hac"],
   },
+  {
+    slug: "electronic-plaza-2026",
+    title: "Electronic Plaza",
+    abstract:
+      "One day and night electronica hotel takeover at Crown Plaza Minneapolis West — live projected visuals for a massive lineup including DJ ESP, Josh Fairman of Sunsquabi, and Lady Midnight.",
+    description:
+      "I'm providing live projected visuals at Electronic Plaza, a one day and night electronica hotel takeover at Crown Plaza Minneapolis West in Plymouth. The massive lineup includes DJ ESP aka Woody McBride, Josh Fairman of Sunsquabi, Big Zach, The Histronic, Momentary Lapse of Floyd, Lady Midnight, and many more — plus the Heatbox Video Game Test Room.",
+    eventDate: "2026-04-03",
+    venue: "Crown Plaza Minneapolis West",
+    city: "Plymouth, MN",
+    tags: ["live-visuals", "vj", "festival", "electronica"],
+  },
+  {
+    slug: "breakers-paradise-17-2026",
+    title: "Breaker's Paradise 17",
+    abstract:
+      "Alterum's Birthday Show at Terminal Bar — live projected visuals for a night of bass music featuring Sami Knox, Jiggy, Katalyst, and Alterum.",
+    description:
+      "I'm providing live projected visuals at Breaker's Paradise 17 — Alterum's Birthday Show at Terminal Bar in Northeast Minneapolis. The lineup features Sami Knox, Jiggy, Katalyst, and Alterum, with sound by Sublab. Doors at 9pm, $15.",
+    eventDate: "2026-04-08",
+    venue: "Terminal Bar",
+    city: "Minneapolis, MN",
+    tags: ["live-visuals", "vj", "bass-music"],
+  },
 ];
