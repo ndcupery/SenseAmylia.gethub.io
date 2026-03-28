@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "@tanstack/react-router";
 import { MapPin, Play, X } from "lucide-react";
@@ -8,6 +8,22 @@ import { getEventMedia } from "@/lib/loadEventMedia";
 import type { FlattenedEventMediaItem } from "@/data/events";
 
 const allEventMedia = getAllEventMedia();
+
+const upcomingEvents = events.filter(isUpcoming).sort((a, b) => a.eventDate.localeCompare(b.eventDate));
+const pastEvents = events.filter((e) => !isUpcoming(e)).sort((a, b) => b.eventDate.localeCompare(a.eventDate));
+const allEvents = [...upcomingEvents, ...pastEvents];
+const allPhotos = allEventMedia.filter((m) => m.type === "image");
+const allVideos = allEventMedia.filter((m) => m.type === "video");
+
+type EventFilter = "upcoming" | "past" | "all" | "photos" | "videos";
+
+const eventFilters: { value: EventFilter; label: string }[] = [
+  { value: "upcoming", label: "Upcoming" },
+  { value: "past", label: "Past" },
+  { value: "all", label: "All Events" },
+  { value: "photos", label: "Photos" },
+  { value: "videos", label: "Videos" },
+];
 
 const container = {
   hidden: { opacity: 0 },
@@ -29,10 +45,38 @@ function formatEventDate(dateStr: string): { month: string; day: string; year: s
 }
 
 export function EventsPage() {
+  const [activeFilter, setActiveFilter] = useState<EventFilter>(
+    upcomingEvents.length > 0 ? "upcoming" : "all"
+  );
   const [lightboxItem, setLightboxItem] = useState<FlattenedEventMediaItem | null>(null);
 
-  const upcomingEvents = events.filter(isUpcoming).sort((a, b) => a.eventDate.localeCompare(b.eventDate));
-  const pastEvents = events.filter((e) => !isUpcoming(e)).sort((a, b) => b.eventDate.localeCompare(a.eventDate));
+  const handleFilter = useCallback((filter: EventFilter) => {
+    setActiveFilter(filter);
+  }, []);
+
+  // Determine grid class and items to display
+  const isEventTab = activeFilter === "upcoming" || activeFilter === "past" || activeFilter === "all";
+  const isMediaTab = activeFilter === "photos" || activeFilter === "videos";
+
+  let eventItems: typeof events = [];
+  let mediaItems: FlattenedEventMediaItem[] = [];
+
+  if (activeFilter === "upcoming") eventItems = upcomingEvents;
+  else if (activeFilter === "past") eventItems = pastEvents;
+  else if (activeFilter === "all") eventItems = allEvents;
+  else if (activeFilter === "photos") mediaItems = allPhotos;
+  else if (activeFilter === "videos") mediaItems = allVideos;
+
+  const upcomingGridClass = "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6";
+  const compactGridClass = "grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4";
+
+  const gridClass = activeFilter === "upcoming" ? upcomingGridClass : compactGridClass;
+
+  const isEmpty = isEventTab ? eventItems.length === 0 : mediaItems.length === 0;
+  const emptyMessage =
+    activeFilter === "upcoming"
+      ? "No upcoming events scheduled."
+      : "No content found.";
 
   return (
     <div className="pt-32 pb-20">
@@ -54,113 +98,93 @@ export function EventsPage() {
         </div>
       </section>
 
-      {/* Upcoming Events */}
-      {upcomingEvents.length > 0 && (
-        <section className="px-6 mb-20">
-          <div className="mx-auto max-w-6xl">
-            <motion.h2
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4, delay: 0.5 }}
-              className="text-2xl font-bold mb-8"
-            >
-              <span className="text-accent">Upcoming</span>
-            </motion.h2>
+      {/* Filter Tabs */}
+      <section className="px-6 mb-8">
+        <div className="mx-auto max-w-6xl">
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4, delay: 0.5 }}
+            className="flex flex-wrap justify-center gap-2"
+          >
+            {eventFilters.map((filter) => (
+              <button
+                key={filter.value}
+                onClick={() => handleFilter(filter.value)}
+                className={`px-5 py-2 rounded-full text-sm font-semibold border transition-colors ${
+                  activeFilter === filter.value
+                    ? "border-primary/30 bg-primary/10 text-primary"
+                    : "border-border text-text-muted hover:text-text hover:border-primary/20"
+                }`}
+              >
+                {filter.label}
+              </button>
+            ))}
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Grid */}
+      <section className="px-6">
+        <div className="mx-auto max-w-6xl">
+          <AnimatePresence mode="wait">
             <motion.div
+              key={activeFilter}
               variants={container}
               initial="hidden"
               animate="show"
-              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
+              exit="hidden"
+              className={gridClass}
             >
-              {upcomingEvents.map((event) => (
-                <EventCard key={event.slug} event={event} upcoming />
-              ))}
-            </motion.div>
-          </div>
-        </section>
-      )}
-
-      {/* Past Events */}
-      {pastEvents.length > 0 && (
-        <section className="px-6 mb-20">
-          <div className="mx-auto max-w-6xl">
-            <motion.h2
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4, delay: upcomingEvents.length > 0 ? 0.6 : 0.5 }}
-              className="text-2xl font-bold mb-8"
-            >
-              <span className="text-primary">Past Events</span>
-            </motion.h2>
-            <motion.div
-              variants={container}
-              initial="hidden"
-              animate="show"
-              className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
-            >
-              {pastEvents.map((event) => (
-                <EventCard key={event.slug} event={event} upcoming={false} />
-              ))}
-            </motion.div>
-          </div>
-        </section>
-      )}
-
-      {/* Performance Gallery */}
-      {allEventMedia.length > 0 && (
-        <section className="px-6">
-          <div className="mx-auto max-w-6xl">
-            <motion.h2
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="text-2xl font-bold mb-8"
-            >
-              <span className="text-primary">Performance Gallery</span>
-            </motion.h2>
-            <motion.div
-              variants={container}
-              initial="hidden"
-              whileInView="show"
-              viewport={{ once: true }}
-              className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
-            >
-              {allEventMedia.map((m) => (
-                <motion.div key={`${m.eventSlug}-${m.filename}`} variants={item} layout>
-                  <div className="glass rounded-xl overflow-hidden group cursor-pointer">
-                    <div className="relative aspect-video overflow-hidden">
-                      {m.type === "image" ? (
-                        <button onClick={() => setLightboxItem(m)} className="block w-full h-full">
-                          <img
-                            src={m.src}
-                            alt={m.alt}
-                            loading="lazy"
-                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                          />
-                        </button>
-                      ) : (
-                        <video src={m.src} controls className="w-full h-full object-cover" />
-                      )}
-                      {m.type === "video" && (
-                        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                          <div className="w-12 h-12 rounded-full bg-background/60 backdrop-blur-sm flex items-center justify-center">
-                            <Play size={20} className="text-primary ml-0.5" fill="currentColor" />
+              {isEventTab &&
+                eventItems.map((event) => (
+                  <EventCard
+                    key={event.slug}
+                    event={event}
+                    upcoming={isUpcoming(event)}
+                  />
+                ))}
+              {isMediaTab &&
+                mediaItems.map((m) => (
+                  <motion.div key={`${m.eventSlug}-${m.filename}`} variants={item} layout>
+                    <div className="glass rounded-xl overflow-hidden group cursor-pointer">
+                      <div className="relative aspect-video overflow-hidden">
+                        {m.type === "image" ? (
+                          <button onClick={() => setLightboxItem(m)} className="block w-full h-full">
+                            <img
+                              src={m.src}
+                              alt={m.alt}
+                              loading="lazy"
+                              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                            />
+                          </button>
+                        ) : (
+                          <video src={m.src} controls className="w-full h-full object-cover" />
+                        )}
+                        {m.type === "video" && (
+                          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                            <div className="w-12 h-12 rounded-full bg-background/60 backdrop-blur-sm flex items-center justify-center">
+                              <Play size={20} className="text-primary ml-0.5" fill="currentColor" />
+                            </div>
                           </div>
+                        )}
+                        <div className="absolute bottom-0 left-0 right-0 px-3 py-2 bg-gradient-to-t from-background/80 to-transparent">
+                          <span className="text-xs text-text-muted font-mono truncate block">
+                            {m.eventTitle}
+                          </span>
                         </div>
-                      )}
-                      <div className="absolute bottom-0 left-0 right-0 px-3 py-2 bg-gradient-to-t from-background/80 to-transparent">
-                        <span className="text-xs text-text-muted font-mono truncate block">
-                          {m.eventTitle}
-                        </span>
                       </div>
                     </div>
-                  </div>
-                </motion.div>
-              ))}
+                  </motion.div>
+                ))}
             </motion.div>
-          </div>
-        </section>
-      )}
+          </AnimatePresence>
+
+          {isEmpty && (
+            <p className="text-center text-text-muted py-20">{emptyMessage}</p>
+          )}
+        </div>
+      </section>
 
       {/* Lightbox */}
       <AnimatePresence>
