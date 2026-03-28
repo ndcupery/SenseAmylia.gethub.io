@@ -1,7 +1,7 @@
 import type { MediaItem } from "@/data/projects";
 
 const eventMediaFiles = import.meta.glob(
-  "/src/content/events/*/media/*.{jpg,jpeg,png,gif,webp,mp4,webm}",
+  "/src/content/events/*/media/*.{jpg,jpeg,png,gif,webp,mp4,webm,JPG,JPEG,PNG,GIF,WEBP,MP4,WEBM}",
   { eager: true, query: "?url", import: "default" },
 ) as Record<string, string>;
 
