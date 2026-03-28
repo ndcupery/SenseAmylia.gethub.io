@@ -2,6 +2,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "@tanstack/react-router";
 import { ArrowLeft, Calendar, ChevronRight, Circle, MessageSquare, X } from "lucide-react";
+import { VideoThumbnail } from "@/components/ui/VideoThumbnail";
 import { Route } from "@/routes/laboratory/$projectSlug";
 import { getProjectBySlug } from "@/data/projects";
 import { ProjectHero } from "@/components/ui/ProjectVisual";
@@ -207,10 +208,10 @@ export function ProjectDetail() {
                       </button>
                     ) : (
                       <div className="aspect-video overflow-hidden">
-                        <video
+                        <VideoThumbnail
                           src={mediaItem.src}
-                          controls
-                          className="w-full h-full object-cover"
+                          alt={mediaItem.alt}
+                          onClick={() => setLightboxIndex(index)}
                         />
                       </div>
                     )}
@@ -248,11 +249,21 @@ export function ProjectDetail() {
               >
                 <X size={24} />
               </button>
-              <img
-                src={media[lightboxIndex].src}
-                alt={media[lightboxIndex].alt}
-                className="max-w-full max-h-[85vh] rounded-2xl object-contain"
-              />
+              {media[lightboxIndex].type === "image" ? (
+                <img
+                  src={media[lightboxIndex].src}
+                  alt={media[lightboxIndex].alt}
+                  className="max-w-full max-h-[85vh] rounded-2xl object-contain"
+                />
+              ) : (
+                <video
+                  src={media[lightboxIndex].src}
+                  controls
+                  autoPlay
+                  className="max-w-full max-h-[85vh] rounded-2xl"
+                  onClick={(e) => e.stopPropagation()}
+                />
+              )}
             </motion.div>
           </>
         )}

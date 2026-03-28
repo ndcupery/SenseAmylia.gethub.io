@@ -1,8 +1,9 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "@tanstack/react-router";
-import { Circle, Play, X } from "lucide-react";
+import { Circle, X } from "lucide-react";
 import { ProjectThumbnail } from "@/components/ui/ProjectVisual";
+import { VideoThumbnail } from "@/components/ui/VideoThumbnail";
 import { projects, getAllTags, getAllMedia } from "@/data/projects";
 import type { ProjectStatus, FlattenedMediaItem } from "@/data/projects";
 
@@ -237,11 +238,7 @@ export function Laboratory() {
                   <MediaCard
                     key={`media-${galleryItem.data.projectSlug}-${index}`}
                     media={galleryItem.data}
-                    onLightbox={
-                      galleryItem.data.type === "image"
-                        ? () => setLightboxItem(galleryItem.data)
-                        : undefined
-                    }
+                    onLightbox={() => setLightboxItem(galleryItem.data)}
                   />
                 ),
               )}
@@ -285,11 +282,21 @@ export function Laboratory() {
               >
                 <X size={24} />
               </button>
-              <img
-                src={lightboxItem.src}
-                alt={lightboxItem.alt}
-                className="max-w-full max-h-[85vh] rounded-2xl object-contain"
-              />
+              {lightboxItem.type === "image" ? (
+                <img
+                  src={lightboxItem.src}
+                  alt={lightboxItem.alt}
+                  className="max-w-full max-h-[85vh] rounded-2xl object-contain"
+                />
+              ) : (
+                <video
+                  src={lightboxItem.src}
+                  controls
+                  autoPlay
+                  className="max-w-full max-h-[85vh] rounded-2xl"
+                  onClick={(e) => e.stopPropagation()}
+                />
+              )}
             </motion.div>
           </>
         )}
@@ -377,20 +384,11 @@ function MediaCard({
               />
             </button>
           ) : (
-            <video
+            <VideoThumbnail
               src={media.src}
-              controls
-              className="w-full h-full object-cover"
+              alt={media.alt}
+              onClick={onLightbox}
             />
-          )}
-
-          {/* Video play icon overlay */}
-          {media.type === "video" && (
-            <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-              <div className="w-12 h-12 rounded-full bg-background/60 backdrop-blur-sm flex items-center justify-center">
-                <Play size={20} className="text-primary ml-0.5" fill="currentColor" />
-              </div>
-            </div>
           )}
 
           {/* Filename label — bottom overlay */}
