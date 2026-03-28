@@ -6,11 +6,11 @@ function pickRandom<T>(items: T[]): T {
 
 const INTERACTION_EVENTS = ["touchstart", "scroll", "click"] as const;
 
-const MIN_RATE = 0.2;
-const MAX_RATE = 2.5;
-const VELOCITY_SCALE = 1.15;
-const DECAY = 0.012;
-const LERP = 0.025;
+const MIN_RATE = 0.6;
+const MAX_RATE = 3.0;
+const VELOCITY_SCALE = 0.15;
+const DECAY = 0.015;
+const LERP = 0.04;
 
 interface VideoBackgroundProps {
   sources: string[];
@@ -23,8 +23,6 @@ export function VideoBackground({ sources }: VideoBackgroundProps) {
   const listenerRef = useRef<(() => void) | null>(null);
   const targetRateRef = useRef(MIN_RATE);
   const currentRateRef = useRef(MIN_RATE);
-  const lastScrollY = useRef(typeof window !== "undefined" ? window.scrollY : 0);
-  const lastScrollTime = useRef(0);
   const rafRef = useRef(0);
 
   const cleanupListeners = useCallback(() => {
@@ -66,16 +64,28 @@ export function VideoBackground({ sources }: VideoBackgroundProps) {
     return cleanupListeners;
   }, [attemptPlay, cleanupListeners]);
 
-  // Scroll velocity → playbackRate
+  // Wheel / touch-scroll → playbackRate (works even at page bounds)
   useEffect(() => {
-    function onScroll() {
-      const now = performance.now();
-      const dy = Math.abs(window.scrollY - lastScrollY.current);
-      const dt = now - lastScrollTime.current;
-      const velocity = dt > 0 ? dy / dt : 0; // px/ms
-      lastScrollY.current = window.scrollY;
-      lastScrollTime.current = now;
-      targetRateRef.current = Math.min(MIN_RATE + velocity * VELOCITY_SCALE, MAX_RATE);
+    function onWheel(e: WheelEvent) {
+      const dy = Math.abs(e.deltaY);
+      // Accumulate into target so rapid wheel ticks build momentum
+      targetRateRef.current = Math.min(
+        targetRateRef.current + dy * VELOCITY_SCALE,
+        MAX_RATE,
+      );
+    }
+
+    let lastTouchY = 0;
+    function onTouchStart(e: TouchEvent) {
+      lastTouchY = e.touches[0].clientY;
+    }
+    function onTouchMove(e: TouchEvent) {
+      const dy = Math.abs(e.touches[0].clientY - lastTouchY);
+      lastTouchY = e.touches[0].clientY;
+      targetRateRef.current = Math.min(
+        targetRateRef.current + dy * VELOCITY_SCALE,
+        MAX_RATE,
+      );
     }
 
     function tick() {
@@ -84,17 +94,22 @@ export function VideoBackground({ sources }: VideoBackgroundProps) {
         // Decay target back toward idle rate
         targetRateRef.current += (MIN_RATE - targetRateRef.current) * DECAY;
         // Lerp current rate toward target
-        currentRateRef.current += (targetRateRef.current - currentRateRef.current) * LERP;
+        currentRateRef.current +=
+          (targetRateRef.current - currentRateRef.current) * LERP;
         video.playbackRate = currentRateRef.current;
       }
       rafRef.current = requestAnimationFrame(tick);
     }
 
-    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("wheel", onWheel, { passive: true });
+    window.addEventListener("touchstart", onTouchStart, { passive: true });
+    window.addEventListener("touchmove", onTouchMove, { passive: true });
     rafRef.current = requestAnimationFrame(tick);
 
     return () => {
-      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("wheel", onWheel);
+      window.removeEventListener("touchstart", onTouchStart);
+      window.removeEventListener("touchmove", onTouchMove);
       cancelAnimationFrame(rafRef.current);
     };
   }, []);
