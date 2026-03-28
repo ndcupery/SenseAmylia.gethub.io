@@ -23,6 +23,12 @@ export function Footer() {
               Laboratory
             </Link>
             <Link
+              to="/events"
+              className="hover:text-primary transition-colors"
+            >
+              Events
+            </Link>
+            <Link
               to="/contact"
               className="hover:text-primary transition-colors"
             >

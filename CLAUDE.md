@@ -153,6 +153,78 @@ Use this workflow when the user asks to initialize a project from Notion, or to 
 - **Status values**: `active`, `completed`, or `archived`
 - **Content path**: Everything goes in `src/content/projects/`, never `public/content/projects/`
 
+## Adding a New Event
+
+When the user asks to add a new event (e.g. "Add an event for Summerfest"):
+
+### Step 1: Gather required info
+
+Ask the user for these things **in order**, one at a time:
+
+1. **Event name** — if not already provided
+2. **Event date** — in YYYY-MM-DD format (determines upcoming vs. past automatically)
+3. **Venue and city** — e.g. "Mortimers, Minneapolis, MN" (optional but recommended)
+4. **Event page URL** — Facebook/Eventbrite/etc. link (optional)
+5. **Abstract** — 1–2 sentence summary
+
+### Step 2: Generate the slug
+
+Convert the event name + year to a URL-safe slug: lowercase, spaces to hyphens, strip special characters.
+Example: "Summerfest 2026" → `summerfest-2026`
+
+### Step 3: Create the content directory
+
+```
+src/content/events/<slug>/
+├── INFO.md          ← reference doc (not app-loaded)
+└── media/           ← empty directory (add .gitkeep)
+```
+
+> **Poster convention:** If the user provides an event poster image, name it `event_poster.<ext>` (e.g. `event_poster.jpg`) and place it in the `media/` directory. It will automatically be used as the card thumbnail and hero image fallback.
+
+### Step 4: Write INFO.md
+
+```markdown
+---
+title: <Event Name>
+slug: <slug>
+eventDate: <YYYY-MM-DD>
+venue: <Venue Name>
+city: <City, State>
+eventUrl: <URL>    # optional
+tags:
+  - <tag-1>
+---
+
+<Full event description written in first person ("I"). 2-4 sentences.>
+```
+
+### Step 5: Add to `src/data/events.ts`
+
+Add a new entry to the `events` array:
+
+```typescript
+{
+  slug: "<slug>",
+  title: "<Event Name>",
+  abstract: "<1-2 sentence summary>",
+  description: "<full description in first person>",
+  eventDate: "<YYYY-MM-DD>",
+  venue: "<Venue Name>",
+  city: "<City, State>",
+  eventUrl: "<URL>",   // optional — omit if none
+  tags: ["<tag-1>"],
+},
+```
+
+Event status (upcoming vs. past) is derived automatically from the `eventDate` — no status field needed.
+
+### Step 6: Verify
+
+Run `npm run lint && npx tsc -b && npm run build` to ensure everything compiles.
+
+---
+
 ## Tech Stack
 
 - React 19 + TypeScript (strict) + Vite

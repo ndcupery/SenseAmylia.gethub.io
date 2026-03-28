@@ -13,7 +13,9 @@ import { Route as ContactRouteImport } from './routes/contact'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as LaboratoryIndexRouteImport } from './routes/laboratory/index'
+import { Route as EventsIndexRouteImport } from './routes/events/index'
 import { Route as LaboratoryProjectSlugRouteImport } from './routes/laboratory/$projectSlug'
+import { Route as EventsEventSlugRouteImport } from './routes/events/$eventSlug'
 
 const ContactRoute = ContactRouteImport.update({
   id: '/contact',
@@ -35,9 +37,19 @@ const LaboratoryIndexRoute = LaboratoryIndexRouteImport.update({
   path: '/laboratory/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const EventsIndexRoute = EventsIndexRouteImport.update({
+  id: '/events/',
+  path: '/events/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const LaboratoryProjectSlugRoute = LaboratoryProjectSlugRouteImport.update({
   id: '/laboratory/$projectSlug',
   path: '/laboratory/$projectSlug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EventsEventSlugRoute = EventsEventSlugRouteImport.update({
+  id: '/events/$eventSlug',
+  path: '/events/$eventSlug',
   getParentRoute: () => rootRouteImport,
 } as any)
 
@@ -45,14 +57,18 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/contact': typeof ContactRoute
+  '/events/$eventSlug': typeof EventsEventSlugRoute
   '/laboratory/$projectSlug': typeof LaboratoryProjectSlugRoute
+  '/events/': typeof EventsIndexRoute
   '/laboratory/': typeof LaboratoryIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/contact': typeof ContactRoute
+  '/events/$eventSlug': typeof EventsEventSlugRoute
   '/laboratory/$projectSlug': typeof LaboratoryProjectSlugRoute
+  '/events': typeof EventsIndexRoute
   '/laboratory': typeof LaboratoryIndexRoute
 }
 export interface FileRoutesById {
@@ -60,7 +76,9 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/contact': typeof ContactRoute
+  '/events/$eventSlug': typeof EventsEventSlugRoute
   '/laboratory/$projectSlug': typeof LaboratoryProjectSlugRoute
+  '/events/': typeof EventsIndexRoute
   '/laboratory/': typeof LaboratoryIndexRoute
 }
 export interface FileRouteTypes {
@@ -69,16 +87,27 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/contact'
+    | '/events/$eventSlug'
     | '/laboratory/$projectSlug'
+    | '/events/'
     | '/laboratory/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about' | '/contact' | '/laboratory/$projectSlug' | '/laboratory'
+  to:
+    | '/'
+    | '/about'
+    | '/contact'
+    | '/events/$eventSlug'
+    | '/laboratory/$projectSlug'
+    | '/events'
+    | '/laboratory'
   id:
     | '__root__'
     | '/'
     | '/about'
     | '/contact'
+    | '/events/$eventSlug'
     | '/laboratory/$projectSlug'
+    | '/events/'
     | '/laboratory/'
   fileRoutesById: FileRoutesById
 }
@@ -86,7 +115,9 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
   ContactRoute: typeof ContactRoute
+  EventsEventSlugRoute: typeof EventsEventSlugRoute
   LaboratoryProjectSlugRoute: typeof LaboratoryProjectSlugRoute
+  EventsIndexRoute: typeof EventsIndexRoute
   LaboratoryIndexRoute: typeof LaboratoryIndexRoute
 }
 
@@ -120,11 +151,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LaboratoryIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/events/': {
+      id: '/events/'
+      path: '/events'
+      fullPath: '/events/'
+      preLoaderRoute: typeof EventsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/laboratory/$projectSlug': {
       id: '/laboratory/$projectSlug'
       path: '/laboratory/$projectSlug'
       fullPath: '/laboratory/$projectSlug'
       preLoaderRoute: typeof LaboratoryProjectSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/events/$eventSlug': {
+      id: '/events/$eventSlug'
+      path: '/events/$eventSlug'
+      fullPath: '/events/$eventSlug'
+      preLoaderRoute: typeof EventsEventSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
@@ -134,7 +179,9 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
   ContactRoute: ContactRoute,
+  EventsEventSlugRoute: EventsEventSlugRoute,
   LaboratoryProjectSlugRoute: LaboratoryProjectSlugRoute,
+  EventsIndexRoute: EventsIndexRoute,
   LaboratoryIndexRoute: LaboratoryIndexRoute,
 }
 export const routeTree = rootRouteImport
