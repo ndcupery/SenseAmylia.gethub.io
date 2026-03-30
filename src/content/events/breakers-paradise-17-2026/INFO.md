@@ -4,6 +4,10 @@ slug: breakers-paradise-17-2026
 eventDate: 2026-04-08
 venue: Terminal Bar
 city: Minneapolis, MN
+links:
+  - Event Info: https://www.facebook.com/events/1659103228432352
+  - Tickets: https://app.opendate.io/e/electronic-plaza-april-03-2026-682196?fbclid=IwY2xjawQ20-FleHRuA2FlbQIxMABicmlkETFXZFJENXE2OEZxVGpXUUJzc3J0YwZhcHBfaWQQMjIyMDM5MTc4ODIwMDg5MgABHhRR4i8D4MO6IcJpkKeOiNpRFv4KLkOk0NG1ky9MktoTbkQ51TLoEnEVn2EH_aem_ZOzO4_-L4samwiXZwUJm1Q
+  - Hotel Rooms: https://www.ihg.com/crowneplaza/hotels/us/en/find-hotels/select-roomrate?fromRedirect=true&qSrt=sBR&qIta=99801505&icdv=99801505&qSlH=MSPPM&qCiD=03&qCiMy=032026&qCoD=04&qCoMy=032026&qGrpCd=ZS2&qAAR=6CBARC&qRtP=6CBARC&setPMCookies=true&qSHBrC=CP&qDest=3131%20Campus%20Drive%2C%20Plymouth%2C%20MN%2C%20US&fbclid=IwY2xjawQ20_BleHRuA2FlbQIxMABicmlkETFXZFJENXE2OEZxVGpXUUJzc3J0YwZhcHBfaWQQMjIyMDM5MTc4ODIwMDg5MgABHh_JPac-MbEMaJE4Vk23fvqk_71j7WTCE9GurCjLU_NZRjkCAuvKU46Ts-6w_aem_UkDR4VxNb2E6z_Xr_r-KZg&showApp=true&adjustMonth=false&srb_u=1
 tags:
   - live-visuals
   - vj

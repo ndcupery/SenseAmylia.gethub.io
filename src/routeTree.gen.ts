@@ -15,7 +15,9 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as LaboratoryIndexRouteImport } from './routes/laboratory/index'
 import { Route as EventsIndexRouteImport } from './routes/events/index'
 import { Route as LaboratoryProjectSlugRouteImport } from './routes/laboratory/$projectSlug'
-import { Route as EventsEventSlugRouteImport } from './routes/events/$eventSlug'
+import { Route as EventsEventSlugRouteRouteImport } from './routes/events/$eventSlug/route'
+import { Route as EventsEventSlugIndexRouteImport } from './routes/events/$eventSlug/index'
+import { Route as EventsEventSlugGalleryRouteImport } from './routes/events/$eventSlug/gallery'
 
 const ContactRoute = ContactRouteImport.update({
   id: '/contact',
@@ -47,39 +49,54 @@ const LaboratoryProjectSlugRoute = LaboratoryProjectSlugRouteImport.update({
   path: '/laboratory/$projectSlug',
   getParentRoute: () => rootRouteImport,
 } as any)
-const EventsEventSlugRoute = EventsEventSlugRouteImport.update({
+const EventsEventSlugRouteRoute = EventsEventSlugRouteRouteImport.update({
   id: '/events/$eventSlug',
   path: '/events/$eventSlug',
   getParentRoute: () => rootRouteImport,
+} as any)
+const EventsEventSlugIndexRoute = EventsEventSlugIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => EventsEventSlugRouteRoute,
+} as any)
+const EventsEventSlugGalleryRoute = EventsEventSlugGalleryRouteImport.update({
+  id: '/gallery',
+  path: '/gallery',
+  getParentRoute: () => EventsEventSlugRouteRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/contact': typeof ContactRoute
-  '/events/$eventSlug': typeof EventsEventSlugRoute
+  '/events/$eventSlug': typeof EventsEventSlugRouteRouteWithChildren
   '/laboratory/$projectSlug': typeof LaboratoryProjectSlugRoute
   '/events/': typeof EventsIndexRoute
   '/laboratory/': typeof LaboratoryIndexRoute
+  '/events/$eventSlug/gallery': typeof EventsEventSlugGalleryRoute
+  '/events/$eventSlug/': typeof EventsEventSlugIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/contact': typeof ContactRoute
-  '/events/$eventSlug': typeof EventsEventSlugRoute
   '/laboratory/$projectSlug': typeof LaboratoryProjectSlugRoute
   '/events': typeof EventsIndexRoute
   '/laboratory': typeof LaboratoryIndexRoute
+  '/events/$eventSlug/gallery': typeof EventsEventSlugGalleryRoute
+  '/events/$eventSlug': typeof EventsEventSlugIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/contact': typeof ContactRoute
-  '/events/$eventSlug': typeof EventsEventSlugRoute
+  '/events/$eventSlug': typeof EventsEventSlugRouteRouteWithChildren
   '/laboratory/$projectSlug': typeof LaboratoryProjectSlugRoute
   '/events/': typeof EventsIndexRoute
   '/laboratory/': typeof LaboratoryIndexRoute
+  '/events/$eventSlug/gallery': typeof EventsEventSlugGalleryRoute
+  '/events/$eventSlug/': typeof EventsEventSlugIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -91,15 +108,18 @@ export interface FileRouteTypes {
     | '/laboratory/$projectSlug'
     | '/events/'
     | '/laboratory/'
+    | '/events/$eventSlug/gallery'
+    | '/events/$eventSlug/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/about'
     | '/contact'
-    | '/events/$eventSlug'
     | '/laboratory/$projectSlug'
     | '/events'
     | '/laboratory'
+    | '/events/$eventSlug/gallery'
+    | '/events/$eventSlug'
   id:
     | '__root__'
     | '/'
@@ -109,13 +129,15 @@ export interface FileRouteTypes {
     | '/laboratory/$projectSlug'
     | '/events/'
     | '/laboratory/'
+    | '/events/$eventSlug/gallery'
+    | '/events/$eventSlug/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
   ContactRoute: typeof ContactRoute
-  EventsEventSlugRoute: typeof EventsEventSlugRoute
+  EventsEventSlugRouteRoute: typeof EventsEventSlugRouteRouteWithChildren
   LaboratoryProjectSlugRoute: typeof LaboratoryProjectSlugRoute
   EventsIndexRoute: typeof EventsIndexRoute
   LaboratoryIndexRoute: typeof LaboratoryIndexRoute
@@ -169,17 +191,44 @@ declare module '@tanstack/react-router' {
       id: '/events/$eventSlug'
       path: '/events/$eventSlug'
       fullPath: '/events/$eventSlug'
-      preLoaderRoute: typeof EventsEventSlugRouteImport
+      preLoaderRoute: typeof EventsEventSlugRouteRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/events/$eventSlug/': {
+      id: '/events/$eventSlug/'
+      path: '/'
+      fullPath: '/events/$eventSlug/'
+      preLoaderRoute: typeof EventsEventSlugIndexRouteImport
+      parentRoute: typeof EventsEventSlugRouteRoute
+    }
+    '/events/$eventSlug/gallery': {
+      id: '/events/$eventSlug/gallery'
+      path: '/gallery'
+      fullPath: '/events/$eventSlug/gallery'
+      preLoaderRoute: typeof EventsEventSlugGalleryRouteImport
+      parentRoute: typeof EventsEventSlugRouteRoute
     }
   }
 }
+
+interface EventsEventSlugRouteRouteChildren {
+  EventsEventSlugGalleryRoute: typeof EventsEventSlugGalleryRoute
+  EventsEventSlugIndexRoute: typeof EventsEventSlugIndexRoute
+}
+
+const EventsEventSlugRouteRouteChildren: EventsEventSlugRouteRouteChildren = {
+  EventsEventSlugGalleryRoute: EventsEventSlugGalleryRoute,
+  EventsEventSlugIndexRoute: EventsEventSlugIndexRoute,
+}
+
+const EventsEventSlugRouteRouteWithChildren =
+  EventsEventSlugRouteRoute._addFileChildren(EventsEventSlugRouteRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
   ContactRoute: ContactRoute,
-  EventsEventSlugRoute: EventsEventSlugRoute,
+  EventsEventSlugRouteRoute: EventsEventSlugRouteRouteWithChildren,
   LaboratoryProjectSlugRoute: LaboratoryProjectSlugRoute,
   EventsIndexRoute: EventsIndexRoute,
   LaboratoryIndexRoute: LaboratoryIndexRoute,

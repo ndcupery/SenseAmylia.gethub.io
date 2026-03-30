@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "@tanstack/react-router";
 import { ArrowLeft, Calendar, ChevronRight, Circle, MessageSquare, X } from "lucide-react";
 import { VideoThumbnail } from "@/components/ui/VideoThumbnail";
+import { Lightbox } from "@/components/ui/Lightbox";
 import { Route } from "@/routes/laboratory/$projectSlug";
 import { getProjectBySlug } from "@/data/projects";
 import { ProjectHero } from "@/components/ui/ProjectVisual";
@@ -224,50 +225,12 @@ export function ProjectDetail() {
         )}
       </div>
 
-      {/* Image Lightbox */}
-      <AnimatePresence>
-        {lightboxIndex !== null && media[lightboxIndex] && (
-          <>
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setLightboxIndex(null)}
-              className="fixed inset-0 z-[100] bg-background/90 backdrop-blur-sm"
-            />
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.9 }}
-              transition={{ duration: 0.2 }}
-              className="fixed inset-0 z-[101] flex items-center justify-center p-6"
-              onClick={() => setLightboxIndex(null)}
-            >
-              <button
-                onClick={() => setLightboxIndex(null)}
-                className="absolute top-6 right-6 p-2 text-text-muted hover:text-primary transition-colors"
-              >
-                <X size={24} />
-              </button>
-              {media[lightboxIndex].type === "image" ? (
-                <img
-                  src={media[lightboxIndex].src}
-                  alt={media[lightboxIndex].alt}
-                  className="max-w-full max-h-[85vh] rounded-2xl object-contain"
-                />
-              ) : (
-                <video
-                  src={media[lightboxIndex].src}
-                  controls
-                  autoPlay
-                  className="max-w-full max-h-[85vh] rounded-2xl"
-                  onClick={(e) => e.stopPropagation()}
-                />
-              )}
-            </motion.div>
-          </>
-        )}
-      </AnimatePresence>
+      <Lightbox
+        media={media}
+        currentIndex={lightboxIndex}
+        onClose={() => setLightboxIndex(null)}
+        onNavigate={setLightboxIndex}
+      />
 
       {/* Update Modal */}
       <AnimatePresence>

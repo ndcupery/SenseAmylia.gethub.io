@@ -1,9 +1,10 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "@tanstack/react-router";
-import { Circle, X } from "lucide-react";
+import { Circle } from "lucide-react";
 import { ProjectThumbnail } from "@/components/ui/ProjectVisual";
 import { VideoThumbnail } from "@/components/ui/VideoThumbnail";
+import { Lightbox } from "@/components/ui/Lightbox";
 import { projects, getAllTags, getAllMedia } from "@/data/projects";
 import type { ProjectStatus, FlattenedMediaItem } from "@/data/projects";
 
@@ -257,50 +258,11 @@ export function Laboratory() {
         </div>
       </section>
 
-      {/* Lightbox */}
-      <AnimatePresence>
-        {lightboxItem && (
-          <>
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setLightboxItem(null)}
-              className="fixed inset-0 z-[100] bg-background/90 backdrop-blur-sm"
-            />
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.9 }}
-              transition={{ duration: 0.2 }}
-              className="fixed inset-0 z-[101] flex items-center justify-center p-6"
-              onClick={() => setLightboxItem(null)}
-            >
-              <button
-                onClick={() => setLightboxItem(null)}
-                className="absolute top-6 right-6 p-2 text-text-muted hover:text-primary transition-colors"
-              >
-                <X size={24} />
-              </button>
-              {lightboxItem.type === "image" ? (
-                <img
-                  src={lightboxItem.src}
-                  alt={lightboxItem.alt}
-                  className="max-w-full max-h-[85vh] rounded-2xl object-contain"
-                />
-              ) : (
-                <video
-                  src={lightboxItem.src}
-                  controls
-                  autoPlay
-                  className="max-w-full max-h-[85vh] rounded-2xl"
-                  onClick={(e) => e.stopPropagation()}
-                />
-              )}
-            </motion.div>
-          </>
-        )}
-      </AnimatePresence>
+      <Lightbox
+        media={lightboxItem ? [lightboxItem] : []}
+        currentIndex={lightboxItem ? 0 : null}
+        onClose={() => setLightboxItem(null)}
+      />
     </div>
   );
 }
