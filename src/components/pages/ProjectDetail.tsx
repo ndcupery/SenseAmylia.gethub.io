@@ -123,11 +123,12 @@ export function ProjectDetail() {
             projectType={project.projectType}
             className="absolute inset-0"
             style={{
-              maskImage: 'linear-gradient(to bottom, black 50%, transparent 100%)',
-              WebkitMaskImage: 'linear-gradient(to bottom, black 50%, transparent 100%)',
+              maskImage: 'linear-gradient(to bottom, black 70%, transparent 100%)',
+              WebkitMaskImage: 'linear-gradient(to bottom, black 70%, transparent 100%)',
             }}
           />
-          <HeroOverlay project={project} status={status} />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent" />
+          <HeroOverlayContent project={project} status={status} />
         </div>
       )}
 
@@ -268,55 +269,60 @@ export function ProjectDetail() {
 
 /* ─── Hero Overlay ─────────────────────────────────────────────── */
 
-function HeroOverlay({
-  project,
-  status,
-}: {
+type HeroOverlayProps = {
   project: ReturnType<typeof getProjectBySlug> & {};
   status: { label: string; color: string };
-}) {
+};
+
+function HeroOverlayContent({ project, status }: HeroOverlayProps) {
+  return (
+    <div className="absolute bottom-0 left-0 right-0 px-6 pb-10">
+      <div className="mx-auto max-w-6xl">
+        <Link
+          to="/laboratory"
+          className="inline-flex items-center gap-1.5 text-sm text-text-muted hover:text-primary transition-colors mb-6"
+        >
+          <ArrowLeft size={14} />
+          Back to Laboratory
+        </Link>
+        <motion.h1
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.35 }}
+          className="text-4xl sm:text-5xl font-black tracking-tight mb-4"
+        >
+          {project.title}
+        </motion.h1>
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.4, delay: 0.5 }}
+          className="flex flex-wrap items-center gap-3"
+        >
+          <span
+            className={`px-3 py-1 rounded-full text-xs font-medium border ${status.color}`}
+          >
+            {status.label}
+          </span>
+          {project.tags.map((tag) => (
+            <span
+              key={tag}
+              className="px-2 py-0.5 rounded-md border border-white/10 text-xs text-text-muted font-mono"
+            >
+              {tag}
+            </span>
+          ))}
+        </motion.div>
+      </div>
+    </div>
+  );
+}
+
+function HeroOverlay(props: HeroOverlayProps) {
   return (
     <>
       <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-black/20 to-transparent" />
-      <div className="absolute bottom-0 left-0 right-0 px-6 pb-10">
-        <div className="mx-auto max-w-6xl">
-          <Link
-            to="/laboratory"
-            className="inline-flex items-center gap-1.5 text-sm text-text-muted hover:text-primary transition-colors mb-6"
-          >
-            <ArrowLeft size={14} />
-            Back to Laboratory
-          </Link>
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.35 }}
-            className="text-4xl sm:text-5xl font-black tracking-tight mb-4"
-          >
-            {project.title}
-          </motion.h1>
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.4, delay: 0.5 }}
-            className="flex flex-wrap items-center gap-3"
-          >
-            <span
-              className={`px-3 py-1 rounded-full text-xs font-medium border ${status.color}`}
-            >
-              {status.label}
-            </span>
-            {project.tags.map((tag) => (
-              <span
-                key={tag}
-                className="px-2 py-0.5 rounded-md border border-white/10 text-xs text-text-muted font-mono"
-              >
-                {tag}
-              </span>
-            ))}
-          </motion.div>
-        </div>
-      </div>
+      <HeroOverlayContent {...props} />
     </>
   );
 }
