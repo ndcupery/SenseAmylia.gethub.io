@@ -5,7 +5,7 @@ import { ArrowLeft, Calendar, ChevronRight, Circle, MessageSquare, X } from "luc
 import { VideoThumbnail } from "@/components/ui/VideoThumbnail";
 import { Lightbox } from "@/components/ui/Lightbox";
 import { Route } from "@/routes/laboratory/$projectSlug";
-import { getProjectBySlug } from "@/data/projects";
+import { getProjectBySlug, getProjectDescriptionHtml } from "@/lib/loadProjects";
 import { ProjectHero } from "@/components/ui/ProjectVisual";
 import { getProjectUpdates } from "@/lib/loadUpdates";
 import { getProjectMedia } from "@/lib/loadMedia";
@@ -74,6 +74,7 @@ export function ProjectDetail() {
   }
 
   const status = statusLabels[project.status];
+  const descriptionHtml = getProjectDescriptionHtml(project.slug);
   const updates = getProjectUpdates(project.slug);
   const media = getProjectMedia(project.slug);
 
@@ -117,14 +118,13 @@ export function ProjectDetail() {
 
         {/* Description */}
         <section className="mx-auto max-w-4xl mb-20">
-          <motion.p
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.7 }}
-            className="text-lg text-text-muted leading-relaxed"
-          >
-            {project.description}
-          </motion.p>
+            className="text-lg text-text-muted leading-relaxed prose prose-invert max-w-none"
+            dangerouslySetInnerHTML={{ __html: descriptionHtml }}
+          />
         </section>
 
         {/* Updates Timeline */}

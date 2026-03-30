@@ -18,17 +18,29 @@ function sitemapPlugin(): Plugin {
         { path: "/contact", priority: "0.9", changefreq: "monthly" },
       ];
 
-      // Extract project slugs from projects.ts
-      const projectsSrc = fs.readFileSync(
-        path.resolve(__dirname, "src/data/projects.ts"),
-        "utf-8",
+      // Extract project slugs from content directories
+      const projectDirs = fs.readdirSync(
+        path.resolve(__dirname, "src/content/projects"),
+        { withFileTypes: true },
       );
-      const slugMatches = projectsSrc.matchAll(/slug:\s*"([^"]+)"/g);
-      const projectRoutes = [...slugMatches].map((m) => ({
-        path: `/gallery/${m[1]}`,
-        priority: "0.7",
-        changefreq: "monthly",
-      }));
+      const projectRoutes = projectDirs
+        .filter(
+          (d) =>
+            d.isDirectory() &&
+            fs.existsSync(
+              path.resolve(
+                __dirname,
+                "src/content/projects",
+                d.name,
+                "OVERVIEW.md",
+              ),
+            ),
+        )
+        .map((d) => ({
+          path: `/laboratory/${d.name}`,
+          priority: "0.7",
+          changefreq: "monthly",
+        }));
 
       const routes = [...staticRoutes, ...projectRoutes];
       const today = new Date().toISOString().split("T")[0];
