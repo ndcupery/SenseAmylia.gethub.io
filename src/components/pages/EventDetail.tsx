@@ -7,6 +7,7 @@ import { Route } from "@/routes/events/$eventSlug";
 import { getEventBySlug, isUpcoming } from "@/data/events";
 import { EventHero } from "@/components/ui/EventVisual";
 import { getEventMedia } from "@/lib/loadEventMedia";
+import { getEventContentHtml } from "@/lib/loadEventContent";
 import { Button } from "@/components/ui/button";
 import { useHead } from "@/hooks/useHead";
 
@@ -68,6 +69,7 @@ export function EventDetail() {
   const { poster, media } = getEventMedia(event.slug);
   const heroImageSrc = poster?.src ?? event.heroImage;
   const allMedia = poster ? [poster, ...media] : media;
+  const contentHtml = getEventContentHtml(event.slug);
 
   return (
     <>
@@ -129,14 +131,24 @@ export function EventDetail() {
 
         {/* Description */}
         <section className="mx-auto max-w-4xl mb-20">
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.7 }}
-            className="text-lg text-text-muted leading-relaxed"
-          >
-            {event.description}
-          </motion.p>
+          {contentHtml ? (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.7 }}
+              className="prose prose-invert prose-lg max-w-none"
+              dangerouslySetInnerHTML={{ __html: contentHtml }}
+            />
+          ) : (
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.7 }}
+              className="text-lg text-text-muted leading-relaxed"
+            >
+              {event.abstract}
+            </motion.p>
+          )}
         </section>
 
         {/* Media Gallery */}
