@@ -50,7 +50,7 @@ export function ProjectHero({ slug, projectType, className = "", style, children
 
   return (
     <div
-      className={`relative bg-cover bg-center ${className}`}
+      className={`bg-cover bg-center ${className}`}
       style={{ backgroundImage: `url(${src})`, ...style }}
     >
       {children}
