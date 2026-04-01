@@ -1,7 +1,7 @@
 ---
 title: Electronic Plaza
-slug: electronic-plaza-2026
-eventDate: 2026-04-03
+slug: electronic-plaza-2027
+eventDate: 2027-03-25
 venue: Crown Plaza Minneapolis West
 city: Plymouth, MN
 tags:

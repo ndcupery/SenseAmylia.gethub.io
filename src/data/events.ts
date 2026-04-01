@@ -73,11 +73,11 @@ export const events: Event[] = [
     tags: ["live-visuals", "vj", "bass-music", "hac"],
   },
   {
-    slug: "electronic-plaza-2026",
+    slug: "electronic-plaza-2027",
     title: "Electronic Plaza",
     abstract:
       "One day and night electronica hotel takeover at Crown Plaza Minneapolis West — live projected visuals for a massive lineup including DJ ESP, Josh Fairman of Sunsquabi, and Lady Midnight.",
-    eventDate: "2026-04-03",
+    eventDate: "2027-03-25",
     venue: "Crown Plaza Minneapolis West",
     city: "Plymouth, MN",
     tags: ["live-visuals", "vj", "festival", "electronica"],
