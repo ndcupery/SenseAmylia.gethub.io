@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as QuoteRequestRouteImport } from './routes/quote-request'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
@@ -20,6 +21,11 @@ import { Route as LaboratoryProjectSlugIndexRouteImport } from './routes/laborat
 import { Route as EventsEventSlugIndexRouteImport } from './routes/events/$eventSlug/index'
 import { Route as EventsEventSlugGalleryRouteImport } from './routes/events/$eventSlug/gallery'
 
+const QuoteRequestRoute = QuoteRequestRouteImport.update({
+  id: '/quote-request',
+  path: '/quote-request',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ContactRoute = ContactRouteImport.update({
   id: '/contact',
   path: '/contact',
@@ -77,6 +83,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/contact': typeof ContactRoute
+  '/quote-request': typeof QuoteRequestRoute
   '/events/$eventSlug': typeof EventsEventSlugRouteRouteWithChildren
   '/laboratory/$projectSlug': typeof LaboratoryProjectSlugRouteRouteWithChildren
   '/events/': typeof EventsIndexRoute
@@ -89,6 +96,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/contact': typeof ContactRoute
+  '/quote-request': typeof QuoteRequestRoute
   '/events': typeof EventsIndexRoute
   '/laboratory': typeof LaboratoryIndexRoute
   '/events/$eventSlug/gallery': typeof EventsEventSlugGalleryRoute
@@ -100,6 +108,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/contact': typeof ContactRoute
+  '/quote-request': typeof QuoteRequestRoute
   '/events/$eventSlug': typeof EventsEventSlugRouteRouteWithChildren
   '/laboratory/$projectSlug': typeof LaboratoryProjectSlugRouteRouteWithChildren
   '/events/': typeof EventsIndexRoute
@@ -114,6 +123,7 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/contact'
+    | '/quote-request'
     | '/events/$eventSlug'
     | '/laboratory/$projectSlug'
     | '/events/'
@@ -126,6 +136,7 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/contact'
+    | '/quote-request'
     | '/events'
     | '/laboratory'
     | '/events/$eventSlug/gallery'
@@ -136,6 +147,7 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/contact'
+    | '/quote-request'
     | '/events/$eventSlug'
     | '/laboratory/$projectSlug'
     | '/events/'
@@ -149,6 +161,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
   ContactRoute: typeof ContactRoute
+  QuoteRequestRoute: typeof QuoteRequestRoute
   EventsEventSlugRouteRoute: typeof EventsEventSlugRouteRouteWithChildren
   LaboratoryProjectSlugRouteRoute: typeof LaboratoryProjectSlugRouteRouteWithChildren
   EventsIndexRoute: typeof EventsIndexRoute
@@ -157,6 +170,13 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/quote-request': {
+      id: '/quote-request'
+      path: '/quote-request'
+      fullPath: '/quote-request'
+      preLoaderRoute: typeof QuoteRequestRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/contact': {
       id: '/contact'
       path: '/contact'
@@ -261,6 +281,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
   ContactRoute: ContactRoute,
+  QuoteRequestRoute: QuoteRequestRoute,
   EventsEventSlugRouteRoute: EventsEventSlugRouteRouteWithChildren,
   LaboratoryProjectSlugRouteRoute: LaboratoryProjectSlugRouteRouteWithChildren,
   EventsIndexRoute: EventsIndexRoute,
