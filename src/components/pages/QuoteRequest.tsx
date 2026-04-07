@@ -70,7 +70,7 @@ const defaultValues: QuoteRequestFormData = {
 
 // ─── Formspree config ───────────────────────────────────────────────────────
 
-const FORMSPREE_ENDPOINT = import.meta.env.VITE_FORMSPREE_ENDPOINT || "";
+const FORMSPREE_ENDPOINT = "https://formspree.io/f/xjgplrkb";
 
 // ─── Progress Bar ───────────────────────────────────────────────────────────
 
@@ -205,42 +205,23 @@ export function QuoteRequest() {
     const data = methods.getValues();
 
     try {
-      if (FORMSPREE_ENDPOINT) {
-        const res = await fetch(FORMSPREE_ENDPOINT, {
-          method: "POST",
-          headers: { "Content-Type": "application/json", Accept: "application/json" },
-          body: JSON.stringify({
-            name: data.contactInfo.fullName,
-            email: data.contactInfo.email,
-            phone: data.contactInfo.phone,
-            company: data.contactInfo.company,
-            service: category ? serviceCategoryLabels[category] : "",
-            message: formatSubmission(data),
-            _subject: `Quote Request — ${data.contactInfo.fullName} | ${category ? serviceCategoryLabels[category] : ""}`,
-          }),
-        });
-        if (!res.ok) throw new Error(`${res.status}`);
-      } else {
-        // Fallback: GitHub Issues (same as contact form)
-        const res = await fetch(
-          "https://api.github.com/repos/wattrobert/wattrobert.github.io/issues",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `token ${import.meta.env.VITE_GITHUB_ISSUES_TOKEN}`,
-              Accept: "application/vnd.github+json",
-              "X-GitHub-Api-Version": "2022-11-28",
-            },
-            body: JSON.stringify({
-              title: `Quote Request — ${data.contactInfo.fullName} | ${category ? serviceCategoryLabels[category] : ""}`,
-              body: formatSubmission(data),
-              labels: ["quote-request"],
-            }),
-          },
-        );
-        if (!res.ok) throw new Error(`${res.status}`);
-      }
+      const res = await fetch(FORMSPREE_ENDPOINT, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({
+          name: data.contactInfo.fullName,
+          email: data.contactInfo.email,
+          phone: data.contactInfo.phone,
+          company: data.contactInfo.company,
+          service: category ? serviceCategoryLabels[category] : "",
+          message: formatSubmission(data),
+          _subject: `Quote Request — ${data.contactInfo.fullName} | ${category ? serviceCategoryLabels[category] : ""}`,
+        }),
+      });
+      if (!res.ok) throw new Error(`${res.status}`);
 
       setStatus("success");
       timerRef.current = setTimeout(() => setSuccessExpanded(true), 1500);
