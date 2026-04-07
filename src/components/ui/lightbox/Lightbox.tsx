@@ -19,32 +19,48 @@ export function Lightbox({
   onClose,
   onNavigate,
 }: LightboxProps) {
-  const [mode, setMode] = useState<LightboxMode>("viewer");
   const isOpen = currentIndex !== null;
 
-  // Reset to viewer mode whenever lightbox opens
-  useEffect(() => {
-    if (isOpen) {
-      setMode("viewer");
-    }
-  }, [isOpen]);
+  return (
+    <AnimatePresence>
+      {isOpen && currentIndex !== null && (
+        <LightboxContent
+          key="lightbox"
+          media={media}
+          currentIndex={currentIndex}
+          onClose={onClose}
+          onNavigate={onNavigate}
+        />
+      )}
+    </AnimatePresence>
+  );
+}
+
+function LightboxContent({
+  media,
+  currentIndex,
+  onClose,
+  onNavigate,
+}: {
+  media: MediaItem[];
+  currentIndex: number;
+  onClose: () => void;
+  onNavigate?: (newIndex: number) => void;
+}) {
+  const [mode, setMode] = useState<LightboxMode>("viewer");
 
   // Lock body scroll when open
   useEffect(() => {
-    if (isOpen) {
-      const prev = document.body.style.overflow;
-      document.body.style.overflow = "hidden";
-      return () => {
-        document.body.style.overflow = prev;
-      };
-    }
-  }, [isOpen]);
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = prev;
+    };
+  }, []);
 
   // Keyboard handling — mode-aware
   const handleKey = useCallback(
     (e: KeyboardEvent) => {
-      if (!isOpen || currentIndex === null) return;
-
       if (e.key === "Escape") {
         if (mode === "gallery") {
           setMode("viewer");
@@ -63,7 +79,7 @@ export function Lightbox({
         }
       }
     },
-    [isOpen, currentIndex, mode, onNavigate, onClose, media.length],
+    [currentIndex, mode, onNavigate, onClose, media.length],
   );
 
   useEffect(() => {
@@ -87,42 +103,38 @@ export function Lightbox({
   );
 
   return (
-    <AnimatePresence>
-      {isOpen && currentIndex !== null && (
-        <LayoutGroup>
-          {/* Backdrop */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
-            className="fixed inset-0 z-[100] bg-black/90 backdrop-blur-sm"
-            onClick={onClose}
-          />
+    <LayoutGroup>
+      {/* Backdrop */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.2 }}
+        className="fixed inset-0 z-[100] bg-black/90 backdrop-blur-sm"
+        onClick={onClose}
+      />
 
-          <AnimatePresence mode="wait">
-            {mode === "viewer" ? (
-              <LightboxViewer
-                key="viewer"
-                media={media}
-                currentIndex={currentIndex}
-                onClose={onClose}
-                onNavigate={handleNavigate}
-                onOpenGallery={() => setMode("gallery")}
-              />
-            ) : (
-              <GalleryGrid
-                key="gallery"
-                media={media}
-                currentIndex={currentIndex}
-                onSelect={handleGallerySelect}
-                onClose={onClose}
-                onBackToViewer={() => setMode("viewer")}
-              />
-            )}
-          </AnimatePresence>
-        </LayoutGroup>
-      )}
-    </AnimatePresence>
+      <AnimatePresence mode="wait">
+        {mode === "viewer" ? (
+          <LightboxViewer
+            key="viewer"
+            media={media}
+            currentIndex={currentIndex}
+            onClose={onClose}
+            onNavigate={handleNavigate}
+            onOpenGallery={() => setMode("gallery")}
+          />
+        ) : (
+          <GalleryGrid
+            key="gallery"
+            media={media}
+            currentIndex={currentIndex}
+            onSelect={handleGallerySelect}
+            onClose={onClose}
+            onBackToViewer={() => setMode("viewer")}
+          />
+        )}
+      </AnimatePresence>
+    </LayoutGroup>
   );
 }
