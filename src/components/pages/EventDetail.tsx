@@ -43,7 +43,7 @@ export function EventDetail() {
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
 
   useHead({
-    title: event ? `${event.title} | Phazer Labs` : undefined,
+    title: event ? `${event.title} | Sense Amylia` : undefined,
     description: event?.abstract,
     ogUrl: event ? `https://phazerlabs.com/events/${event.slug}` : undefined,
     ogImage: event?.thumbnail,

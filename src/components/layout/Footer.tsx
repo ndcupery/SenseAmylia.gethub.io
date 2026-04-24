@@ -37,7 +37,7 @@ export function Footer() {
           </nav>
           <div className="flex items-center gap-3">
             <p className="text-sm text-text-muted">
-              &copy; {new Date().getFullYear()} Phazer Labs. All rights reserved.
+              &copy; {new Date().getFullYear()} Sense Amylia. All rights reserved.
             </p>
             <a
               href="https://github.com/PhazerLabs"

@@ -58,7 +58,7 @@ export function ProjectDetail() {
     : undefined;
 
   useHead({
-    title: project ? `${project.title} | Phazer Labs` : undefined,
+    title: project ? `${project.title} | Sense Amylia` : undefined,
     description: metaDescription,
     ogUrl: project
       ? `https://phazerlabs.com/laboratory/${project.slug}`

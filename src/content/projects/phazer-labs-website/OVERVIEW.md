@@ -1,5 +1,5 @@
 ---
-title: Phazer Labs Website
+title: Sense Amylia Website
 slug: phazer-labs-website
 abstract: The site you're looking at right now — built with React, Three.js, and a lot of experimentation.
 tags:

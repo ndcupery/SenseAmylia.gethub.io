@@ -15,7 +15,7 @@ startDate: 2026-03-29
 
 ## Overview
  
-The Phazer Labs Modular Stage System is a custom-designed platform for live projection mapping, built from the ground up around 3D-printed geometric tiles. Rather than projecting onto flat screens or generic surfaces, the system uses physical geometry — raised and recessed patterns printed in matte white PLA — as the canvas. Light lands differently on every facet. Shadows shift with the music. The surface itself becomes part of the visual.
+The Sense Amylia Modular Stage System is a custom-designed platform for live projection mapping, built from the ground up around 3D-printed geometric tiles. Rather than projecting onto flat screens or generic surfaces, the system uses physical geometry — raised and recessed patterns printed in matte white PLA — as the canvas. Light lands differently on every facet. Shadows shift with the music. The surface itself becomes part of the visual.
  
 The system was designed with one core operational goal: arrive at a venue, assemble the stage, and be projection-ready in minutes — not hours.
  

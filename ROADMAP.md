@@ -1,4 +1,4 @@
-# Phazer Labs Roadmap
+# Sense Amylia Roadmap
 
 ## Planned Features
 

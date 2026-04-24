@@ -95,9 +95,9 @@ Here are the main things you'll want to change. You can do all of this by asking
 
 ### Change your name and branding
 
-The site name ("Phazer Labs") appears in several places. Just tell Claude:
+The site name ("Sense Amylia") appears in several places. Just tell Claude:
 
-> "Replace all instances of 'Phazer Labs' with 'My Name' throughout the site."
+> "Replace all instances of 'Sense Amylia' with 'My Name' throughout the site."
 
 Claude will find every file that needs updating and make the changes.
 
@@ -348,7 +348,7 @@ If the original repository gets improvements you want, you can sync your fork:
 | Add a project | "Add a new project called [name]" |
 | Add an event | "Add a new event called [name] on [date] at [venue]" |
 | Add a lab note | "Add a lab note to [project] about [topic]" |
-| Rename the site | "Replace 'Phazer Labs' with '[your name]' everywhere" |
+| Rename the site | "Replace 'Sense Amylia' with '[your name]' everywhere" |
 | Change the about page | "Rewrite the about page to say: [your bio]" |
 | Add a photo | "Use `hero.jpg` as the hero image for [project]" |
 | Deploy now | "Commit and push to main" |

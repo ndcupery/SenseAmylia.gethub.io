@@ -78,7 +78,7 @@ export function Home() {
               </h1>
 
               <p className="text-lg sm:text-xl text-text-muted max-w-2xl mx-auto mb-10 leading-relaxed">
-                Phazer Labs is where technology meets creativity. I build
+                Sense Amylia is where technology meets creativity. I build
                 software, create content, perform live visuals, and push the
                 boundaries of what&apos;s possible.
               </p>
