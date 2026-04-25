@@ -70,5 +70,5 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
-  base: "/",
+  base: "/SenseAmylia.gethub.io/",
 });

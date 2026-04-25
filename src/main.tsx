@@ -6,7 +6,7 @@ import "@/styles/index.css";
 
 const router = createRouter({
   routeTree,
-  basepath: "/",
+  basepath: "/SenseAmylia.gethub.io/",
 });
 
 declare module "@tanstack/react-router" {
