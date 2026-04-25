@@ -1,6 +1,6 @@
-# Phazer Labs
+# Sense Amylia
 
-Official website for Phazer Labs — tech creator, software builder, creative agency.
+Official website for Sense Amylia — tech creator, software builder, creative agency.
 
 ## Tech Stack
 

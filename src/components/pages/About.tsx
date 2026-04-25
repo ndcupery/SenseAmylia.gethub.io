@@ -74,7 +74,7 @@ export function About() {
           >
             <h1 className="text-4xl sm:text-6xl font-black tracking-tight mb-6">
               About{" "}
-              <span className="gradient-text">Phazer Labs</span>
+              <span className="gradient-text">Sense Amylia</span>
             </h1>
             <p className="text-lg text-text-muted max-w-2xl mx-auto leading-relaxed">
               A creative technology lab born from a passion for building things.
@@ -100,7 +100,7 @@ export function About() {
               </h2>
               <div className="space-y-4 text-text-muted leading-relaxed">
                 <p>
-                  Phazer Labs started as a simple idea: document the process of
+                  Sense Amylia started as a simple idea: document the process of
                   building cool stuff with technology. What began as a YouTube
                   channel quickly evolved into something bigger.
                 </p>

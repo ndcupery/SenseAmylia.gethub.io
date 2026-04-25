@@ -14,7 +14,7 @@ const commands = [
   {
     id: "about",
     label: "About",
-    description: "Learn about Phazer Labs",
+    description: "Learn about Sense Amylia",
     icon: User,
     to: "/about" as const,
   },

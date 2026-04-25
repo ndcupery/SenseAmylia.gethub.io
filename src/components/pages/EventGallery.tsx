@@ -29,7 +29,7 @@ export function EventGallery() {
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
 
   useHead({
-    title: event ? `Gallery | ${event.title} | Phazer Labs` : undefined,
+    title: event ? `Gallery | ${event.title} | Sense Amylia` : undefined,
     description: event
       ? `Photo and video gallery for ${event.title}`
       : undefined,

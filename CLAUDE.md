@@ -1,4 +1,4 @@
-# Phazer Labs — Agent Instructions
+# Sense Amylia — Agent Instructions
 
 ## Adding a New Project
 
